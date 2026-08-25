@@ -1,0 +1,94 @@
+---
+title: "CI/CD Pipelines That Developers Actually Love"
+description: "Fast feedback, boring deploys, and pipelines as product — how to design continuous integration and delivery that accelerates a team instead of gating it."
+date: "2026-06-02"
+author: "youssef-adel"
+category: "devops-cloud"
+tags: ["CI/CD", "DevOps", "Automation", "GitHub Actions"]
+featured: true
+---
+
+A pipeline is a product whose users are developers. Treat it like one — measure latency, remove friction, earn trust — and deployment becomes what it should be: a non-event. This article is the design doc for that product.
+
+## The prime directive: fast feedback
+
+Every property of a good pipeline derives from one number: **time from push to actionable verdict.** Under ten minutes, developers stay in context; past twenty, they context-switch and batch changes, and everything downstream rots.
+
+Budget accordingly:
+
+| Stage | Target | Notes |
+| --- | --- | --- |
+| Lint + typecheck | < 60s | Runs on every push |
+| Unit tests | < 3 min | Parallelize by file |
+| Build | < 5 min | Cache dependencies and artifacts |
+| Integration/E2E | < 10 min | Only affected suites when possible |
+
+## A GitHub Actions workflow with the right bones
+
+```yaml
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true      # superseded pushes die immediately
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm             # dependency cache: minutes → seconds
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test -- --coverage
+      - run: npm run build
+```
+
+The two lines people skip are the ones that matter most: `concurrency` cancels obsolete runs, and `cache` stops re-downloading the internet on every push.
+
+## Deploy pipelines: the same, plus reversibility
+
+CI answers "is this correct?" CD answers "can we change our mind?" Design for the second question:
+
+1. **Build once, promote everywhere.** The artifact that passed staging IS the artifact in production — never rebuild between environments.
+2. **Automate the rollback path.** If reverting requires tribal knowledge, it will not happen at 3am. One command, tested quarterly.
+3. **Health gates over human gates.** Post-deploy checks (error rate, latency, key endpoints) auto-rollback faster than a human can read a dashboard.
+4. **Feature flags decouple deploy from release.** Ship dark, enable gradually, kill instantly without redeploying.
+
+```text
+merge → build artifact → deploy staging (auto) → health check passes
+     → deploy prod 10% → error budget holds? → 100%
+     → any gate fails? → automatic rollback + alert
+```
+
+## Pipeline-as-product practices
+
+**Flakiness is a bug with a deadline.** A test that fails randomly trains the team to hit "retry" without reading — at which point your pipeline verifies nothing. Quarantine flaky tests same-day, fix or delete within the week.
+
+**The pipeline config is reviewed like code.** Because it is code — with outsized blast radius. Changes to workflow files get the same scrutiny as auth changes.
+
+**Measure the pipeline's own metrics:** p50/p95 duration, success rate excluding infra failures, time-to-restore after red main. What gets measured stays fast.
+
+<Callout variant="tip" title="Main stays green">
+The discipline underneath all the tooling: `main` is always releasable. Branches are short-lived, merges are frequent, and a broken main is a stop-the-line event — not a note for later.
+</Callout>
+
+## Anti-patterns we have paid for, so you do not have to
+
+- **The 45-minute monolith job** nobody re-runs until Friday afternoon.
+- **Snowflake release scripts** runnable only from one laptop belonging to someone on vacation.
+- **Manual approval gates that approve everything**, which are bureaucracy wearing a security costume.
+- **Tests that only pass in CI** — an environment difference is a bug in your configuration, not a mystery of nature.
+
+Start small: cache your dependencies, add concurrency cancellation, script your rollback, measure push-to-verdict. Then iterate like it is a product — because it is the product your team uses more than anything else you ship.

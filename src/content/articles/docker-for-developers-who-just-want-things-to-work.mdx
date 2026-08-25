@@ -1,0 +1,113 @@
+---
+title: "Docker for Developers Who Just Want Things to Work"
+description: "Containers explained from first principles to confident daily use — images, layers, volumes, compose, and the workflows that eliminate 'works on my machine' forever."
+date: "2026-07-30"
+author: "youssef-adel"
+category: "devops-cloud"
+tags: ["Docker", "DevOps", "Containers", "Tutorials"]
+featured: true
+---
+
+Most Docker tutorials either hand you five commands and pray, or vanish into kernel namespaces. This one aims between them: enough mental model to reason about containers, enough workflow to use them daily with confidence.
+
+## The two-sentence mental model
+
+An **image** is a snapshot of a filesystem plus metadata — your app, its runtime, its dependencies, frozen. A **container** is that snapshot running, with a thin writable layer on top. That is genuinely most of it.
+
+Why developers care: the container's filesystem does not depend on your laptop. Node 20 on your machine, Node 20 in CI, Node 20 in production — byte for byte.
+
+## An image is a layered cake
+
+Every instruction in a Dockerfile adds one read-only layer. Containers share unchanged layers, which makes builds and pulls fast — if you order instructions well:
+
+```dockerfile
+# Dependencies change less often than code — cache them separately
+FROM node:22-alpine
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+CMD ["node", "dist/server.js"]
+```
+
+Change a source file and only the last three steps rerun. Change `package.json` and everything rebuilds — correctly, because the copy order matches the dependency order.
+
+<Callout variant="tip" title=".dockerignore is half the build speed">
+Without one, `COPY . .` drags in node_modules, .git, and your 2GB of design assets. Copy the same spirit as .gitignore; watch builds drop from minutes to seconds.
+</Callout>
+
+## Volumes: where data goes to survive
+
+Containers are disposable by design. Delete one and its writable layer dies. Anything that must outlive the container — database files, uploads, caches — belongs in a **volume**:
+
+```bash
+# Postgres data survives restarts, rebuilds, even version upgrades
+docker run -d \
+  --name dev-postgres \
+  -e POSTGRES_PASSWORD=devpassword \
+  -v pgdata:/var/lib/postgresql/data \
+  -p 5432:5432 \
+  postgres:17
+```
+
+Rule of thumb: **code lives in images, state lives in volumes, configuration lives in environment variables.**
+
+## Compose: the multi-container choreography
+
+Real projects are app + database + cache + mail catcher. Compose describes the whole ensemble in one file:
+
+```yaml
+services:
+  web:
+    build: .
+    ports: ["3000:3000"]
+    environment:
+      DATABASE_URL: postgres://postgres:devpassword@db:5432/app
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17-alpine
+    volumes: [pgdata:/var/lib/postgresql/data]
+    environment:
+      POSTGRES_PASSWORD: devpassword
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+
+volumes:
+  pgdata:
+```
+
+Now `docker compose up` gives every teammate — and CI — identical infrastructure in ninety seconds. Notice `db` as a hostname: compose networks make service names DNS-resolvable. No IPs, ever.
+
+## The daily workflow, distilled
+
+```bash
+docker compose up --build        # start everything fresh
+docker compose logs -f web       # tail one service
+docker compose exec web sh       # shell inside the running container
+docker compose down              # stop, keep volumes
+docker compose down -v           # scorched earth — also wipe data
+```
+
+Learn those five commands and you operate 90 percent of development Docker setups.
+
+## Debugging: three habits that solve most problems
+
+1. **Read the actual error.** Container exits immediately? `docker compose logs <service>` before touching anything else.
+2. **Check the working directory.** Half of all "file not found" errors are WORKDIR assumptions.
+3. **Inspect layers interactively.** `docker run -it --entrypoint sh <image>` drops you into the built image so you can verify what actually got copied.
+
+> Containers reward people who read error messages and punish people who cargo-cult Stack Overflow snippets. The feedback loop is fast once you stop guessing.
+
+## Where to go next
+
+Once this workflow feels boring — that is the goal — the natural ladder is: multi-stage builds for smaller production images, then secrets management, then orchestrators like Kubernetes when single hosts genuinely stop being enough. Each step exists to solve a problem you will recognize when you hit it.
+
+Until then: one Dockerfile, one compose file, and the sweet silence of a team that stopped arguing about environment setup.

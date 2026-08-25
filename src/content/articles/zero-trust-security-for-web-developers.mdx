@@ -1,0 +1,97 @@
+---
+title: "Zero-Trust Security for Web Developers: A Practical Introduction"
+description: "Never trust, always verify — translated into concrete choices about auth, sessions, headers, and API design that working web developers can apply this week."
+date: "2026-06-18"
+author: "omar-hassan"
+category: "cybersecurity"
+tags: ["Security", "Web Development", "Authentication", "Best Practices"]
+featured: true
+---
+
+Zero-trust sounds like enterprise procurement poetry until you translate it into engineering decisions. Stripped of vendor decks, it is one sentence: **no request is trusted because of where it comes from — only because of who was verified, what was authorized, and how narrowly.**
+
+Here is that philosophy applied to the parts of a web application you touch every week.
+
+## Identity: verify humans properly
+
+### Phishing-resistant MFA or bust
+
+SMS codes are better than nothing and weak against SIM swaps. Authenticator apps are solid. Passkeys — WebAuthn credentials bound to origin — are the current gold standard because they cannot be phished by design: the browser refuses to hand them to lookalike domains.
+
+```text
+Priority order for new products:
+  1. Passkeys (with a clear recovery path)
+  2. TOTP authenticator apps
+  3. Email magic links (convenience login, not sole factor)
+  4. SMS OTP — legacy compatibility only
+```
+
+### Sessions are the real perimeter
+
+Strong login means little if session handling leaks. Non-negotiables:
+
+- `httpOnly`, `Secure`, `SameSite=Lax` cookies — always, not just in prod.
+- Short-lived access tokens paired with rotating refresh tokens; reuse of a rotated refresh token kills the whole family.
+- Server-side revocation lists, because "log out" must mean *now*, not after token expiry.
+
+## Authorization: check every request, assume nothing
+
+The zero-trust core discipline. Two patterns cover nearly everything:
+
+**Deny by default at the route layer.** Every handler starts closed and opens explicitly:
+
+```typescript
+// Every server-side mutation re-verifies — never trust the client UI
+export async function DELETE(req: Request, { params }) {
+  const session = await auth();
+  if (!session) return unauthorized();
+
+  const doc = await db.doc.findUnique({ where: { id: params.id } });
+  if (!doc) return notFound();
+  if (doc.ownerId !== session.userId && !isTeamAdmin(session)) return forbidden();
+
+  await db.doc.delete({ where: { id: params.id } });
+  audit.log("doc.deleted", { actor: session.userId, docId: doc.id });
+  return ok();
+}
+```
+
+**Object-level checks, every time.** IDOR — manipulating IDs to reach other people's data — remains a top-three breach class precisely because teams check *authentication* but forget *ownership* per object. The UI hiding the button is not authorization.
+
+## Transport and headers: free wins, configure once
+
+Security headers are the rare control that is pure profit:
+
+```text
+Content-Security-Policy: default-src 'self'; frame-ancestors 'none'
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+```
+
+A strict CSP alone neutralizes most XSS payload classes. Build it incrementally with report-only mode, then enforce. HSTS after you are certain HTTPS is permanent.
+
+## APIs: verify the caller, scope the token
+
+Machine callers deserve the same suspicion:
+
+- **Short-lived, scoped tokens.** OAuth scopes or JWT claims that name exactly what this client may do — never a god-token shared across services.
+- **Validate the signature AND the claims.** Expired? Wrong audience? Wrong issuer? Reject before touching business logic.
+- **Rate limit per identity**, not just per IP — distributed attackers share IP pools but not API keys.
+
+<Callout variant="warning" title="Internal does not mean trusted">
+The most expensive breach pattern of the last decade starts with one compromised internal service and flat east-west trust. mTLS or signed service tokens between internal calls; treat your VPC like a hostile network with better furniture.
+</Callout>
+
+## Secrets: rotate like you mean it
+
+- No secrets in code, ever — env injection from a manager (Vault, cloud KMS, platform secrets).
+- Automated rotation schedules; a secret that cannot be rotated is a liability compounding daily.
+- Separate secrets per environment per service, so blast radius stays bounded.
+
+## Make zero-trust a habit, not a project
+
+The philosophy scales down to a code-review reflex: *for every endpoint, who verified, what authorized, how logged?* Teams that ask those three questions per pull request converge on secure defaults without a security team. Teams that save it for an annual audit get the audit they deserve.
+
+Start small this week: add ownership checks to one resource, enable one more header, shorten one token lifetime. Zero trust is not a product you buy — it is a direction you walk.

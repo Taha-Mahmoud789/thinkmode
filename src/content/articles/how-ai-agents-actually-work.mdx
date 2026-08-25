@@ -1,0 +1,106 @@
+---
+title: "How AI Agents Actually Work: Tools, Memory, and Planning"
+description: "Under the hood of autonomous LLM systems — the agent loop, tool contracts, memory architectures, and planning strategies explained with code you can run."
+date: "2026-06-10"
+updatedAt: "2026-07-15"
+author: "layla-fahmy"
+category: "ai-machine-learning"
+tags: ["AI Agents", "LLM", "Automation", "Architecture"]
+editorsPick: true
+trending: 4
+---
+
+Every agent framework screenshot looks different. Underneath, they are almost identical. This article takes apart the machinery — the loop, the tools, the memory, the planner — precisely enough that you could build one from scratch and understand every line.
+
+## The anatomy of an agent
+
+Four components, always the same four:
+
+1. **The model** — proposes actions as structured output.
+2. **Tools** — typed functions the runtime can execute on the model's behalf.
+3. **Memory** — whatever outlives a single call: message history, scratchpads, vector stores.
+4. **The orchestrator** — the `while` loop wiring it together. Not glamorous; load-bearing.
+
+```typescript
+// The entire agent loop, honestly
+while (!task.done && steps < MAX_STEPS) {
+  const observation = describeState(task);
+
+  const action = await llm.json({
+    system: AGENT_PROMPT,
+    user: `Goal: ${task.goal}\nObserved: ${observation}\nAvailable tools: ${toolSchemas}`,
+    schema: ActionSchema, // { tool: string; args: object; done?: boolean }
+  });
+
+  const result = action.tool === "finish"
+    ? null
+    : await executeTool(action.tool, action.args);
+  task.log.push({ action, result });
+  if (action.done) task.done = true;
+}
+```
+
+If you expected more, good — there isn't. The sophistication lives in what surrounds this loop.
+
+## Tool design is API design
+
+The model chooses tools from their descriptions alone. Vague description, wrong choice. The rules that separate working agents from demo agents:
+
+- **Name tools after verbs**: `search_issues`, `create_ticket`, `run_tests`. Nouns force the model to guess usage.
+- **Validate arguments with schemas** and reject invalid calls with *readable errors* — the error message is your debugging channel with the model.
+- **Return structured results**, not prose walls. JSON with explicit success flags beats a paragraph the model must interpret.
+- **Fewer tools beat more tools.** Ten sharp tools outperform fifty overlapping ones.
+
+```python
+from pydantic import BaseModel, Field
+
+class SearchIssuesArgs(BaseModel):
+    query: str = Field(description="Free-text search across issue titles and bodies")
+    limit: int = Field(default=10, ge=1, le=50, description="Maximum results to return")
+
+def search_issues(args: SearchIssuesArgs) -> dict:
+    """Search the issue tracker. Returns matches with id, title, status."""
+    hits = tracker.search(args.query, limit=args.limit)
+    return {"ok": True, "count": len(hits), "issues": [h.as_dict() for h in hits]}
+```
+
+## Memory is an architecture decision
+
+"Memory" bundles three different problems:
+
+| Kind | Lifespan | Typical implementation |
+| --- | --- | --- |
+| Working memory | One task | Message list + compaction summaries |
+| Episodic memory | Across tasks | Vector store of past runs and outcomes |
+| Semantic memory | Permanent | Curated facts/rules injected into prompts |
+
+The practical failure mode is treating all three as "stuff the context window." Long tasks drown; stale episodes mislead. Production agents **compact aggressively** — summarize completed subtasks into a few lines, keep only live state verbatim.
+
+## Planning: three strategies that cover 95 percent of cases
+
+### 1. ReAct — think, act, observe, repeat
+
+The default. The model interleaves reasoning traces with tool calls. Cheap, flexible, surprisingly strong on well-tooled problems. Weakness: loses the plot on very long horizons.
+
+### 2. Plan-then-execute
+
+Draft the full plan first, then execute steps (often with a smaller executor model). Predictable, auditable, easy to budget. Weakness: brittle when step three's assumption breaks at step nine.
+
+### 3. Reflexion — critique your own trace
+
+After a failed run, feed the transcript back with "why did this fail?" and retry with lessons attached. Costs extra calls; rescues hard tasks. Best used selectively on high-value failures.
+
+<Callout variant="warning" title="Compounding error is the enemy">
+At 95 percent per-step reliability, a 30-step task succeeds only 21 percent of the time. Every serious agent architecture — checkpoints, replanning, verification steps — is a response to this one arithmetic fact.
+</Callout>
+
+## What production agents add
+
+The loop above is a prototype. Systems serving users add:
+
+- **Sandboxing** — filesystem/network isolation per run, so mistakes are boring.
+- **Budgets** — max steps, max tokens, max wall-clock. Runaway loops are a cost incident.
+- **Traces** — every thought, call, and result logged and replayable. Debugging without traces is archaeology.
+- **Verification gates** — a second model (or test suite) reviews outputs before consequences happen.
+
+Build the loop in an afternoon. Spend the quarter on the guardrails. That ratio — one afternoon of magic to a quarter of discipline — is what "agents in production" actually means in 2026.

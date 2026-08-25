@@ -1,0 +1,114 @@
+---
+title: "A Complete Guide to Building LLM Applications"
+description: "From your first prompt to production: architecture patterns, cost control, evaluation, and the mistakes every team makes when shipping LLM-powered features."
+date: "2026-08-05"
+updatedAt: "2026-08-20"
+author: "omar-hassan"
+category: "ai-machine-learning"
+tags: ["LLM", "AI", "APIs", "Architecture"]
+featured: true
+---
+
+Shipping a demo with a language model takes an afternoon. Shipping an LLM application that survives real users, real budgets, and real failures is a different discipline entirely. This guide compresses what we have learned building and reviewing LLM systems into the decisions that actually matter.
+
+## Start with the workflow, not the model
+
+The most common architecture mistake is treating the LLM as the product. It is not. The product is a **workflow** — classify this ticket, extract these fields, draft this reply — and the model is one dependency inside it.
+
+Design the workflow first:
+
+1. Define the task contract: inputs, outputs, and what "correct" means.
+2. Decide where determinism belongs. SQL, rules, and small classifiers are cheaper, faster, and testable. Use the LLM only where language genuinely needs understanding.
+3. Wrap the model call behind an interface so you can swap providers without touching business logic.
+
+```typescript
+// Provider-agnostic completion interface — swap vendors behind this seam
+interface CompletionRequest {
+  system: string;
+  user: string;
+  maxTokens?: number;
+  temperature?: number;
+  jsonSchema?: Record<string, string>;
+}
+
+interface CompletionPort {
+  complete(request: CompletionRequest): Promise<string>;
+}
+```
+
+## Prompting is interface design
+
+Prompts are code. Treat them like it.
+
+- **Version them.** A prompt change is a behavior change. Review it, test it, roll it back.
+- **Structure the output.** Ask for JSON matching a schema, validate on receipt, and retry with the validation error appended when it fails.
+- **Give examples.** Two or three high-quality examples beat paragraphs of instruction.
+
+```python
+from pydantic import BaseModel
+
+class TicketSummary(BaseModel):
+    severity: str        # "low" | "medium" | "high" | "critical"
+    component: str
+    summary: str         # max 40 words
+
+def summarize_ticket(raw: str) -> TicketSummary:
+    response = llm.complete(
+        system="Extract structured fields. Respond only with JSON.",
+        user=f"{raw}\n\nSchema: {TicketSummary.model_json_schema()}",
+    )
+    return TicketSummary.model_validate_json(response)  # raises -> retry path
+```
+
+## Retrieval beats fine-tuning (almost always)
+
+Teams reach for fine-tuning when the real problem is knowledge, not behavior. If the model needs your documentation, your tickets, or your codebase, **retrieval-augmented generation** is cheaper, updatable, and auditable.
+
+A minimal RAG pipeline:
+
+| Stage | Job | Common mistake |
+| --- | --- | --- |
+| Chunking | Split documents into semantic units | Fixed-size chunks that split ideas |
+| Embedding | Vectorize chunks | Reusing one embedding model for docs and queries |
+| Retrieval | Fetch top-k relevant chunks | k too large; context drowns |
+| Generation | Answer with citations | Not showing sources to the user |
+
+<Callout variant="tip" title="Hybrid search wins">
+Pure vector search misses exact identifiers — error codes, function names, SKUs. Combine embeddings with keyword search (BM25) and merge results. This single change typically fixes the most common retrieval complaints.
+</Callout>
+
+## Control cost before it controls you
+
+Token spend scales with traffic and carelessness. The levers, in order of impact:
+
+1. **Route by difficulty.** Classify incoming requests and send easy ones to a small model. Most workloads are 80 percent easy.
+2. **Cache aggressively.** Semantic caching of similar prompts cuts repeat traffic dramatically.
+3. **Cap output length.** Rambling is billed. Set tight max-token limits and ask for concision structurally.
+4. **Trim context.** Every retrieved chunk you include costs money on every call. Prune ruthlessly.
+
+## Evaluation is the whole game
+
+You cannot improve what you do not measure, and "it seems better" is not a metric. Build a small evaluation suite early:
+
+```text
+evals/
+  cases/
+    extraction-basic.jsonl      # inputs + expected fields
+    summarization-tone.jsonl    # inputs + rubric scores
+    refusal-safety.jsonl        # adversarial inputs
+```
+
+Score three things: **accuracy** against labeled cases, **format compliance** (did it produce valid output at all), and **latency/cost** per case. Run the suite on every prompt or model change. Twenty good cases catch most regressions; zero cases catch none.
+
+## Reliability patterns that matter in production
+
+- **Timeouts and fallbacks.** Model providers have bad minutes. Degrade to a smaller model or a cached answer instead of hanging.
+- **Idempotency keys.** Retries happen. Make them safe.
+- **Human-in-the-loop gates.** For consequential outputs — payments, emails to customers, deletions — require approval until your evals earn trust.
+- **Observability.** Log prompt, response, latency, token counts, and trace ID for every call. When quality drops at 2am, this log is the difference between diagnosis and superstition.
+
+## The part nobody reads but everyone needs
+
+Security. Prompt injection is not theoretical: any text the model reads can carry instructions. Treat model output as untrusted input — sanitize it before it reaches shells, SQL, or HTML. Constrain tool permissions to the minimum. Assume injection will eventually succeed, and design so that success is boring.
+
+Build in that order — workflow, prompting, retrieval, cost, evals, reliability, security — and the demo stops being a demo. Skip a layer and production will find it for you, usually at the worst possible time.
