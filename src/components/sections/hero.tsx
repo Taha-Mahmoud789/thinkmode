@@ -1,8 +1,19 @@
 import Link from "next/link";
+import fs from "node:fs";
+import path from "node:path";
 import { Icon } from "@/components/ui/icon";
 import { HeroVisual } from "@/components/sections/hero-visual";
 import type { ArticleMeta } from "@/types";
 import { formatDate } from "@/lib/utils";
+
+/** Real ChatGPT-generated hero artwork (preferred) with SVG fallback. */
+function hasRealHeroArt(): boolean {
+  try {
+    return fs.existsSync(path.join(process.cwd(), "public", "images", "hero-ai.jpg"));
+  } catch {
+    return false;
+  }
+}
 
 interface HeroProps {
   featuredArticle: ArticleMeta | null;
@@ -81,7 +92,22 @@ export function Hero({ featuredArticle }: HeroProps) {
 
           {/* --------------------------------- visual --------------------------------- */}
           <div className="relative mx-auto w-full max-w-[560px] lg:max-w-none">
-            <HeroVisual />
+            {hasRealHeroArt() ? (
+              <div className="relative overflow-hidden rounded-3xl border border-border shadow-glow-md">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/hero-ai.jpg"
+                  alt="Abstract artwork of a human profile wired with glowing violet and cyan circuitry"
+                  width={1600}
+                  height={901}
+                  fetchPriority="high"
+                  decoding="async"
+                  className="block h-auto w-full"
+                />
+              </div>
+            ) : (
+              <HeroVisual />
+            )}
 
             {featuredArticle ? (
               <Link

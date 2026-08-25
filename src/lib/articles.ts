@@ -14,6 +14,26 @@ import type {
 } from "@/types";
 
 const CONTENT_DIR = path.join(process.cwd(), "src", "content", "articles");
+/** Real generated cover images live here (ChatGPT-generated PNGs). */
+const REAL_COVERS_DIR = path.join(process.cwd(), "public", "articles");
+
+/**
+ * Cover resolution order:
+ * 1. Explicit `image:` frontmatter
+ * 2. A real generated cover at /articles/<slug>.png (if downloaded)
+ * 3. Deterministic generative SVG route (/covers/<slug>)
+ */
+function resolveCover(slug: string, explicitImage?: string): string {
+  if (explicitImage) return explicitImage;
+  try {
+    if (fs.existsSync(path.join(REAL_COVERS_DIR, `${slug}.jpg`))) {
+      return `/articles/${slug}.jpg`;
+    }
+  } catch {
+    // Filesystem unavailable — fall through to the SVG cover.
+  }
+  return `/covers/${slug}`;
+}
 
 interface ParsedArticle {
   slug: string;
@@ -93,7 +113,7 @@ function toArticle(parsed: ParsedArticle): Article {
     category: getCategory(categorySlug),
     tags: tags as NonNullable<(typeof tags)[number]>[],
     image,
-    cover: `/covers/${slug}`,
+    cover: resolveCover(slug, image),
     readingMinutes: Math.max(1, Math.round(stats.minutes)),
     featured,
     editorsPick,
