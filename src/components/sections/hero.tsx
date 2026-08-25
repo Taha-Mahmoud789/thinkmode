@@ -2,14 +2,13 @@ import Link from "next/link";
 import fs from "node:fs";
 import path from "node:path";
 import { Icon } from "@/components/ui/icon";
-import { HeroVisual } from "@/components/sections/hero-visual";
 import type { ArticleMeta } from "@/types";
 import { formatDate } from "@/lib/utils";
 
-/** Real ChatGPT-generated hero artwork (preferred) with SVG fallback. */
-function hasRealHeroArt(): boolean {
+/** Real ChatGPT-generated full-bleed hero backdrop. */
+function hasWideHero(): boolean {
   try {
-    return fs.existsSync(path.join(process.cwd(), "public", "images", "hero-ai.jpg"));
+    return fs.existsSync(path.join(process.cwd(), "public", "images", "hero-wide.jpg"));
   } catch {
     return false;
   }
@@ -19,23 +18,49 @@ interface HeroProps {
   featuredArticle: ArticleMeta | null;
 }
 
+/**
+ * Cinematic full-bleed hero (Linear/Apple-style):
+ * generated artwork spans the whole band, subject sits on the right,
+ * typography floats on the artwork's clean left negative space.
+ * No boxed image, no overlay card collision.
+ */
 export function Hero({ featuredArticle }: HeroProps) {
+  const wideHero = hasWideHero();
+
   return (
-    <section className="relative overflow-hidden pt-[72px]" aria-labelledby="hero-title">
-      {/* ambient background */}
+    <section
+      className="relative overflow-hidden pt-[72px]"
+      aria-labelledby="hero-title"
+    >
+      {/* ------------------------- cinematic backdrop ------------------------- */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-grid mask-fade-y opacity-60" />
-        <div className="absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-primary/12 blur-[140px]" />
-        <div className="absolute right-[8%] top-[30%] h-[300px] w-[300px] rounded-full bg-cyan/8 blur-[100px]" />
+        {wideHero ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/hero-wide.jpg"
+              alt=""
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-[70%_center] md:object-center"
+            />
+            {/* readability veil over the text zone + edge blending */}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--background)_0%,color-mix(in_srgb,var(--background)_82%,transparent)_38%,transparent_72%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,color-mix(in_srgb,var(--background)_55%,transparent)_0%,transparent_22%,transparent_78%,var(--background)_100%)]" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-grid mask-fade-y opacity-60" />
+            <div className="absolute -top-40 left-1/2 h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-primary/12 blur-[140px]" />
+          </>
+        )}
       </div>
 
+      {/* -------------------------------- content -------------------------------- */}
       <div className="tm-container relative">
-        <div className="grid items-center gap-14 py-16 md:py-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
-          {/* ---------------------------------- copy ---------------------------------- */}
+        <div className="grid min-h-[calc(100svh-180px)] items-center gap-10 py-20 md:py-28 lg:min-h-[640px]">
           <div className="max-w-xl">
-            <p className="kicker">
-              Technology · AI · Engineering
-            </p>
+            <p className="kicker">Technology · AI · Engineering</p>
             <h1
               id="hero-title"
               className="mt-6 font-display text-[clamp(2.9rem,7vw,4.75rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-text"
@@ -89,58 +114,45 @@ export function Hero({ featuredArticle }: HeroProps) {
               </div>
             </dl>
           </div>
-
-          {/* --------------------------------- visual --------------------------------- */}
-          <div className="relative mx-auto w-full max-w-[560px] lg:max-w-none">
-            {hasRealHeroArt() ? (
-              <div className="relative overflow-hidden rounded-3xl border border-border shadow-glow-md">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/images/hero-ai.jpg"
-                  alt="Abstract artwork of a human profile wired with glowing violet and cyan circuitry"
-                  width={1600}
-                  height={901}
-                  fetchPriority="high"
-                  decoding="async"
-                  className="block h-auto w-full"
-                />
-              </div>
-            ) : (
-              <HeroVisual />
-            )}
-
-            {featuredArticle ? (
-              <Link
-                href={`/articles/${featuredArticle.slug}`}
-                className="group absolute inset-x-4 bottom-4 block rounded-2xl border border-border bg-background/80 p-5 shadow-glow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-border-strong sm:inset-x-6 sm:bottom-6 sm:p-6 lg:right-auto lg:left-6 lg:w-[380px]"
-              >
-                <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan">
-                  <span aria-hidden="true" className="animate-pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-cyan" />
-                  Latest insight
-                </p>
-                <h2 className="mt-3 font-display text-base font-semibold leading-snug tracking-tight text-text transition-colors group-hover:text-primary-light sm:text-lg">
-                  {featuredArticle.title}
-                </h2>
-                <p className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-text-tertiary">
-                  <span>{featuredArticle.category.shortName}</span>
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={featuredArticle.date}>
-                    {formatDate(featuredArticle.date, "medium")}
-                  </time>
-                  <span aria-hidden="true">·</span>
-                  <span>{featuredArticle.readingMinutes} min read</span>
-                  <span
-                    aria-hidden="true"
-                    className="ml-auto grid h-8 w-8 place-items-center rounded-full bg-primary text-white transition-transform duration-300 group-hover:translate-x-1"
-                  >
-                    <Icon name="arrow-right" size={14} />
-                  </span>
-                </p>
-              </Link>
-            ) : null}
-          </div>
         </div>
       </div>
+
+      {/* --------------------- featured article strip --------------------- */}
+      {featuredArticle ? (
+        <div className="relative border-t border-border bg-background/60 backdrop-blur-md">
+          <div className="tm-container">
+            <Link
+              href={`/articles/${featuredArticle.slug}`}
+              className="group flex items-center gap-4 py-4 sm:gap-6"
+            >
+              <span className="flex shrink-0 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan">
+                <span
+                  aria-hidden="true"
+                  className="animate-pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-cyan"
+                />
+                Latest insight
+              </span>
+              <span className="hidden h-4 w-px shrink-0 bg-border sm:block" aria-hidden="true" />
+              <span className="min-w-0 flex-1 truncate font-display text-sm font-semibold text-text transition-colors group-hover:text-primary-light sm:text-base">
+                {featuredArticle.title}
+              </span>
+              <span className="hidden shrink-0 items-center gap-3 text-xs text-text-tertiary md:flex">
+                <time dateTime={featuredArticle.date}>
+                  {formatDate(featuredArticle.date, "medium")}
+                </time>
+                <span aria-hidden="true">·</span>
+                <span>{featuredArticle.readingMinutes} min</span>
+              </span>
+              <span
+                aria-hidden="true"
+                className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-white transition-transform duration-300 group-hover:translate-x-1"
+              >
+                <Icon name="arrow-right" size={14} />
+              </span>
+            </Link>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

@@ -1,29 +1,37 @@
 #!/usr/bin/env python3
-"""Optimize generated covers: resize to max 1600w, convert to quality-82 JPEG."""
+"""Optimize generated cover-art job dirs -> public/articles + public/images."""
 
+import shutil
 from pathlib import Path
 
 from PIL import Image
 
 ROOT = Path(r"C:/Users/tabdo/Desktop/TM/thinkmode")
-TARGETS = [
-    *sorted((ROOT / "public" / "articles").glob("*.png")),
-    ROOT / "public" / "images" / "hero-ai.png",
-]
 
-for src in TARGETS:
-    dest = src.with_suffix(".jpg")
-    with Image.open(src) as im:
+
+def optimize(png_path: Path, jpg_dest: Path, max_w: int = 1600, quality: int = 82) -> None:
+    with Image.open(png_path) as im:
         im = im.convert("RGB")
-        if im.width > 1600:
-            ratio = 1600 / im.width
-            im = im.resize((1600, round(im.height * ratio)), Image.LANCZOS)
-        im.save(dest, "JPEG", quality=82, optimize=True, progressive=True)
-    old_kb = src.stat().st_size // 1024
-    new_kb = dest.stat().st_size // 1024
-    print(f"{dest.name}: {old_kb}KB -> {new_kb}KB")
+        if im.width > max_w:
+            ratio = max_w / im.width
+            im = im.resize((max_w, round(im.height * ratio)), Image.LANCZOS)
+        jpg_dest.parent.mkdir(parents=True, exist_ok=True)
+        im.save(jpg_dest, "JPEG", quality=quality, optimize=True, progressive=True)
+    print(f"{jpg_dest.name}: {png_path.stat().st_size // 1024}KB -> {jpg_dest.stat().st_size // 1024}KB")
 
-# Remove the heavy PNG originals now that JPEGs exist.
-for src in TARGETS:
-    src.unlink()
-print("\nPNG originals removed.")
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) == 3:
+        # Single-file mode: optimize src.png -> dest.jpg
+        optimize(Path(sys.argv[1]), Path(sys.argv[2]))
+    else:
+        targets = [
+            *sorted((ROOT / "public" / "articles").glob("*.png")),
+            ROOT / "public" / "images" / "hero-ai.png",
+        ]
+        for src in targets:
+            optimize(src, src.with_suffix(".jpg"))
+            src.unlink()
+        print("\nPNG originals removed.")
