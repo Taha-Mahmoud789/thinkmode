@@ -1,7 +1,6 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "thinkmode-bookmarks";
@@ -44,8 +43,11 @@ function getSnapshot(): string[] {
   return readBookmarks();
 }
 
+// Stable reference for server snapshot — prevents infinite loop warning
+const EMPTY_ARRAY: string[] = [];
+
 function getServerSnapshot(): string[] {
-  return [];
+  return EMPTY_ARRAY;
 }
 
 export function isBookmarked(slug: string): boolean {
@@ -124,7 +126,7 @@ export function BookmarkButton({
 }
 
 /** Optional saved-count badge for the header (kept minimal by default). */
-export function SavedIndicator(): ReactNode {
+export function SavedIndicator() {
   const saved = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   if (saved.length === 0) return null;
   return (

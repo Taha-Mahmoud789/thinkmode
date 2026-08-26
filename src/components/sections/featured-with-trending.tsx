@@ -63,9 +63,7 @@ export function FeaturedWithTrending({ featured, trending }: FeaturedWithTrendin
 
             <ol className="mt-7 space-y-6">
               {trending.map((article, index) => (
-                <li key={article.slug}>
-                  <TrendingRow index={index + 1} article={article} showThumbnail={false} />
-                </li>
+                <TrendingRow key={article.slug} index={index + 1} article={article} showThumbnail={false} />
               ))}
             </ol>
 
