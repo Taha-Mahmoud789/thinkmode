@@ -58,6 +58,10 @@ function ArticleImage({
   height?: number | string;
 }) {
   if (!src) return null;
+  // Only allow local images (covers already embedded as markdown at top).
+  // Remote CDN images from source sites are stripped during import; ignore any
+  // that slip through so the page never crashes on an unconfigured host.
+  if (/^https?:\/\//i.test(src)) return null;
   const w = typeof width === "string" ? Number(width) : (width ?? 1200);
   const h = typeof height === "string" ? Number(height) : (height ?? 675);
   return (
