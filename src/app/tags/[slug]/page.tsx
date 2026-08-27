@@ -9,16 +9,7 @@ interface TagPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllArticleMetas().flatMap((article) =>
-    article.tags.map((tag) => ({ slug: makeTagSlug(tag.slug) })),
-  ).filter(
-    (entry, index, all) =>
-      all.findIndex((other) => other.slug === entry.slug) === index,
-  );
-}
-
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,

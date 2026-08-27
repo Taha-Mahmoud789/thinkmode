@@ -5,11 +5,7 @@ import { initials } from "@/lib/utils";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export function generateStaticParams() {
-  return getArticleSlugs().map((slug) => ({ slug }));
-}
-
-/** Per-article Open Graph card, statically generated at build time. */
+/** Per-article Open Graph card, rendered on-demand. */
 export default async function ArticleOgImage({
   params,
 }: {
@@ -19,8 +15,9 @@ export default async function ArticleOgImage({
   const article = getArticleBySlug(slug);
 
   const title = article?.title ?? "ThinkMode";
-  const category = article?.category.shortName ?? "";
-  const accent = article?.category.accent ?? "#7c3cff";
+  const categoryObj = article?.category;
+  const category = categoryObj?.shortName ?? "";
+  const accent = categoryObj?.accent ?? "#17B890";
   const authorName = article?.author.name ?? "";
 
   return new ImageResponse(
@@ -43,13 +40,13 @@ export default async function ArticleOgImage({
               width: 54,
               height: 54,
               borderRadius: 14,
-              border: "3px solid #7c3cff",
+              border: "3px solid #17B890",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 30,
               fontWeight: 700,
-              color: "#9d6cff",
+              color: "#23C8A8",
             }}
           >
             T
@@ -96,14 +93,14 @@ export default async function ArticleOgImage({
               width: 44,
               height: 44,
               borderRadius: 22,
-              backgroundColor: "rgba(124,60,255,0.18)",
-              border: "2px solid rgba(124,60,255,0.5)",
+              backgroundColor: "rgba(23,184,144,0.18)",
+              border: "2px solid rgba(23,184,144,0.5)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 18,
               fontWeight: 700,
-              color: "#9d6cff",
+              color: "#23C8A8",
             }}
           >
             {authorName ? initials(authorName) : ""}

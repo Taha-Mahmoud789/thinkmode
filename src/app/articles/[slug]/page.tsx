@@ -19,11 +19,7 @@ interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getArticleSlugs().map((slug) => ({ slug }));
-}
-
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,

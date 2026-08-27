@@ -1,5 +1,5 @@
 import { renderCoverSvg } from "@/lib/covers";
-import { getArticleSlugs, getArticleBySlug } from "@/lib/articles";
+import { getArticleBySlug } from "@/lib/articles";
 
 interface CoverRouteContext {
   params: Promise<{ slug: string }>;
@@ -8,6 +8,7 @@ interface CoverRouteContext {
 /**
  * Generative cover art per article: /covers/<slug>
  * Deterministic SVG — cached aggressively at the CDN edge.
+ * Rendered on-demand (no static params) to avoid build-time failures.
  */
 export async function GET(
   _request: Request,
@@ -19,7 +20,7 @@ export async function GET(
 
   const svg = renderCoverSvg({
     title: article.title,
-    categorySlug: article.category.slug,
+    categorySlug: article.category?.slug ?? "general",
     seed: slug,
   });
 
@@ -30,8 +31,4 @@ export async function GET(
       ETag: `"cover-${slug}"`,
     },
   });
-}
-
-export function generateStaticParams() {
-  return getArticleSlugs().map((slug) => ({ slug }));
 }
