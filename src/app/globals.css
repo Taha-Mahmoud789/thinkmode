@@ -12,29 +12,30 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --background: #050505;
-  --surface: #0b0b0f;
-  --surface-2: #111118;
-  --surface-3: #17171f;
+  --background: #07110F;
+  --surface: #0D1916;
+  --surface-2: #11171F;
+  --surface-3: #1A1F2B;
 
-  --primary: #7c3cff;
-  --primary-light: #9d6cff;
+  --primary: #17B890;
+  --primary-light: #23C8A8;
   --cyan: #22d3ee;
   --blue: #3b82f6;
 
-  --success: #34d399;
-  --warning: #fbbf24;
+  --success: #17B890;
+  --warning: #f6ad55;
   --danger: #fb7185;
 
-  --text: #f4f4f5;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #71717a;
-  --text-inverse: #0b0b0f;
+  --text: #F5F7F6;
+  --text-secondary: #91A29D;
+  --text-tertiary: #6B7E8A;
+  --text-inverse: #07110F;
 
-  --border: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.17);
+  --border: #1E3A5F;
+  --border-strong: #1E3A5F80;
 
-  --ring: rgba(124, 60, 255, 0.55);
+  --ring: #17B89055;
+
   --shadow-color: 0deg 0% 0%;
 }
 
@@ -93,8 +94,8 @@
   --font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --shadow-glow-sm: 0 0 0 1px rgb(124 60 255 / 0.18), 0 8px 32px -8px rgb(124 60 255 / 0.35);
-  --shadow-glow-md: 0 0 0 1px rgb(124 60 255 / 0.22), 0 20px 60px -16px rgb(124 60 255 / 0.45);
+  --shadow-glow-sm: 0 0 0 1px rgb(23 184 144 / 0.18), 0 8px 32px -8px rgb(23 184 144 / 0.35);
+  --shadow-glow-md: 0 0 0 1px rgb(23 184 144 / 0.22), 0 20px 60px -16px rgb(23 184 144 / 0.45);
   --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 16px 40px -20px hsl(var(--shadow-color) / 0.5);
 
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
@@ -116,7 +117,7 @@ body {
 }
 
 ::selection {
-  background: rgb(124 60 255 / 0.35);
+  background: rgb(23 184 144 / 0.35);
   color: var(--text);
 }
 
@@ -248,11 +249,11 @@ body {
     background-color: var(--primary);
     color: #fff;
     border: 1px solid transparent;
-    box-shadow: 0 8px 24px -10px rgb(124 60 255 / 0.55);
+    box-shadow: 0 8px 24px -10px rgb(23 184 144 / 0.55);
   }
   .btn-primary:hover {
     background-color: var(--primary-light);
-    box-shadow: 0 10px 32px -10px rgb(124 60 255 / 0.7);
+    box-shadow: 0 10px 32px -10px rgb(23 184 144 / 0.7);
     transform: translateY(-1px);
   }
   .btn-secondary {
