@@ -12,7 +12,7 @@ export function EditorsPickBanner({ article }: { article: ArticleMeta | null }) 
       className="relative w-full overflow-hidden"
       aria-labelledby="editors-pick-heading"
       style={{
-        backgroundImage: 'url("/images/editors-pick-banner.jpg")',
+        backgroundImage: 'url("/articles/editors-pick-banner.jpg")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

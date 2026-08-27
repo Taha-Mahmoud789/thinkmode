@@ -8,7 +8,7 @@ import { formatDate } from "@/lib/utils";
 /** Real ChatGPT-generated full-bleed hero backdrop. */
 function hasWideHero(): boolean {
   try {
-    return fs.existsSync(path.join(process.cwd(), "public", "images", "hero-wide.jpg"));
+    return fs.existsSync(path.join(process.cwd(), "public", "articles", "hero-ai.jpg"));
   } catch {
     return false;
   }
@@ -38,7 +38,7 @@ export function Hero({ featuredArticle }: HeroProps) {
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/images/hero-wide.jpg"
+              src="/articles/hero-ai.jpg"
               alt=""
               fetchPriority="high"
               decoding="async"
