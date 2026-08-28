@@ -11,6 +11,12 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/search"],
       },
+      // Explicitly allow AI citation crawlers — per blog-analyze AI Readiness
+      {
+        userAgent: ["GPTBot", "ClaudeBot", "PerplexityBot", "Google-Extended", "CCBot", "Googlebot"],
+        allow: "/",
+        disallow: ["/search"],
+      },
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,
     host: siteConfig.url,

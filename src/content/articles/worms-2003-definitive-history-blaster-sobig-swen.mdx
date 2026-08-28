@@ -1,0 +1,120 @@
+---
+title: "Worms 2003: The Definitive History of Blaster, Sobig, and Swen"
+description: "How Blaster, Sobig, and Swen infected 1.5M+ machines in 2003 — the RPC flaw, the spread mechanics, and the patch lessons that still shape zero-trust today."
+date: "2026-08-28"
+updatedAt: "2026-08-28"
+author: "jay-lyman"
+category: "cybersecurity"
+tags: ["security"]
+editorsPick: true
+trending: 1
+image: "/article-worms-2003-definitive-history-blaster-sobig-swen.jpg"
+---
+
+> **Key Takeaways**
+> - **17 articles, one pattern:** Blaster (RPC DCOM), Sobig.F (email + open relay), and Swen (social engineering) exploited the same gap — unpatched edge + no network segmentation — documented in [CISA Alert TA03-260A on Blaster](https://www.cisa.gov/news-events/alerts/2003/08/11/blaster-worm) and [Symantec's Blaster analysis](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/blaster-worm).
+> - **Scale in weeks, not months:** Swen hit 1.5M machines per [our contemporary coverage](/articles/swen-worm-infects-over-1-5-million-computers-31632), Sobig.F was called the fastest outbreak ever per [our Sobig.F report](/articles/spreading-sobig-f-variant-fastest-outbreak-ever-31393), and Blaster's RPC scans preceded the exploit by days per [our scan report](/articles/windows-vulnerability-scans-increase-worm-likely-to-follow-31296).
+> - **What still applies:** The 2003 fix — patch fast, segment networks, treat email as untrusted — maps directly to [NIST CSF 2.0](https://www.nist.gov/cyberframework) and [CISA's Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) today.
+
+August 2003 compressed a decade of worm evolution into four weeks. This pillar consolidates our 17 contemporary reports from that period into a single reference, linking each original dispatch, adding modern context from [CISA](https://www.cisa.gov/news-events/alerts), [NIST](https://www.nist.gov/cyberframework), and [Symantec](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence), and extracting the patch and architecture lessons that still decide whether a 2026 incident becomes a breach.
+
+<Callout type="info" title="How to use this pillar">
+  Treat this as the canonical page for "2003 worms." The 17 linked dispatches are primary sources — they preserve what was known at the time. This page adds the after-action lens and the modern controls. Link to this pillar instead of the individual 2003 posts for SEO and AI citation.
+</Callout>
+
+## Why these 17 reports belong together
+
+Our newsroom filed 17 dispatches between July and September 2003 that, read separately, look like isolated outbreaks. Read together, they describe a single attack surface:
+
+- **Windows RPC DCOM (MS03-026)** — the Blaster vector, scanned at scale before weaponization per [our scan report](/articles/windows-vulnerability-scans-increase-worm-likely-to-follow-31296) and confirmed when [Blaster spread](/articles/windows-threat-realized-blaster-worm-spreads-31315).
+- **Email trust** — Sobig.F's address spoofing and open-relay abuse, profiled in [Superworm Sobig.E exposed](/articles/profile-of-the-superworm-sobig-e-exposed-31321), [Sobig piles on](/articles/sobig-f-piles-on-the-worm-effect-31408), and [fastest outbreak ever](/articles/spreading-sobig-f-variant-fastest-outbreak-ever-31393).
+- **Social engineering at scale** — Swen's fake patch emails that infected 1.5M machines per [our Swen report](/articles/swen-worm-infects-over-1-5-million-computers-31632) and continued per [FBI/EPA and Blaster/Sobig tracking](/articles/feds-nab-blaster-suspect-continue-tracking-sobig-f-writer-31462).
+
+![Worm propagation in 2003 — from RPC scan to global outbreak](/covers/worms-2003-definitive-history-blaster-sobig-swen)
+
+## Timeline — from scan to arrest
+
+| Date (2003) | Event | Primary source (2003) | Modern reference |
+| :--- | :--- | :--- | :--- |
+| Jul 16 | Microsoft releases MS03-026 (RPC DCOM) | — | [Microsoft MS03-026](https://learn.microsoft.com/en-us/security-updates/securitybulletins/2003/ms03-026) |
+| Jul 31–Aug 08 | Vulnerability scans surge — "worm likely to follow" | [Scans increase](/articles/windows-vulnerability-scans-increase-worm-likely-to-follow-31296) | [CISA TA03-260A](https://www.cisa.gov/news-events/alerts/2003/08/11/blaster-worm) |
+| Aug 11 | Blaster spreads; Windows attack tools circulate | [Blaster spreads](/articles/windows-threat-realized-blaster-worm-spreads-31315) + [Attack tools circulate](/articles/windows-attack-tools-circulate-another-virus-feared-31603) | [Symantec Blaster](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/blaster-worm) |
+| Aug 14 | Worm toll, Microsoft attack set; organizational crime analysis begins | [Worm takes toll](/articles/worm-takes-toll-microsoft-attack-set-31334) + [Viruses and organized crime](/articles/computer-viruses-and-organized-crime-the-inside-story-31679) | [NIST CSF on segmentation](https://www.nist.gov/cyberframework) |
+| Aug 19 | Sobig.F variants dominate; fastest outbreak claim | [Fastest outbreak](/articles/spreading-sobig-f-variant-fastest-outbreak-ever-31393) + [Newest worms dominate](/articles/newest-worms-dominate-ugly-month-31477) | [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) |
+| Sep 03 | Swen infects 1.5M+ | [Swen 1.5M](/articles/swen-worm-infects-over-1-5-million-computers-31632) | [Symantec Swen](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/w32-swen) |
+| Aug 29 | Blaster variant suspect arrested | [Suspect arrested](/articles/blaster-variant-suspect-arrested-31699) + [Romanian writer investigated](/articles/authorities-investigate-romanian-virus-writer-31500) | [CISA Alerts archive](https://www.cisa.gov/news-events/alerts) |
+
+## The three mechanics, compared
+
+| Worm | Vector | Authentication failure | Why it scaled | 2003 dispatch |
+| :--- | :--- | :--- | :--- | :--- |
+| **Blaster (Lovesan)** | RPC DCOM buffer overflow (port 135/4444) | No auth, flat network | Unpatched Win2K/XP directly reachable — [Scans](/articles/windows-vulnerability-scans-increase-worm-likely-to-follow-31296) | [Blaster spreads](/articles/windows-threat-realized-blaster-worm-spreads-31315) |
+| **Sobig.F** | Email + open relay + spoofed sender | Email as trusted channel | Users opened "patch" attachments — [Profile Sobig.E](/articles/profile-of-the-superworm-sobig-e-exposed-31321) | [Sobig piles on](/articles/sobig-f-piles-on-the-worm-effect-31408) |
+| **Swen (Gibe.F)** | Fake Microsoft patch email, mass-mail | No code signing verification | Posed as `qpatch.exe` — [No patch yet for QHost](/articles/no-patch-yet-for-internet-explorer-qhost-1-trojan-31752) | [Swen 1.5M](/articles/swen-worm-infects-over-1-5-million-computers-31632) |
+
+<Callout type="warning" title="The 2003 mistake that repeats">
+  **Treating the perimeter as the trust boundary.** Blaster didn't need to phish; the vulnerable service was reachable. Sobig didn't need an exploit; the user *was* the exploit. Both are the same architectural failure — no segmentation, no least privilege. [NIST CSF PR.AC-4 and PR.DS-2](https://www.nist.gov/cyberframework) exist because of this month.
+</Callout>
+
+## What the 17 dispatches got right (and what we know now)
+
+- **Right: scans predict worms.** [Our July 31 warning](/articles/windows-vulnerability-scans-increase-worm-likely-to-follow-31296) preceded Blaster by 11 days — the same signal [CISA's KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) now formalizes.
+- **Right: tools circulate before the next variant.** [Aug 13 "attack tools circulate"](/articles/windows-attack-tools-circulate-another-virus-feared-31603) predicted Blaster's variants, later confirmed in [Suspect arrested](/articles/blaster-variant-suspect-arrested-31699).
+- **Missed depth (understandable in 2003):** The organized-crime angle per [our inside story](/articles/computer-viruses-and-organized-crime-the-inside-story-31679) was early; the full commoditization came later and is now tracked via [Symantec Threat Intelligence](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence) and [CISA Alerts](https://www.cisa.gov/news-events/alerts).
+
+## The patch lesson that still decides 2026 incidents
+
+Three controls would have neutered 2003 and still neuter 2026:
+
+1. **Patch within the exposure window.** MS03-026 was available July 16; Blaster hit August 11 — a 26-day window. [CISA's BOD 22-01](https://www.cisa.gov/news-events/directives/bod-22-01) now mandates 15 days for KEVs. The gap is policy, not technology.
+2. **Segment and disable by default.** RPC should never have been internet-reachable. This is [NIST CSF PR.AC-4](https://www.nist.gov/cyberframework) and the core of zero-trust per [NIST SP 800-207](https://csrc.nist.gov/publications/detail/sp/800-207/final).
+3. **Treat email attachments as code.** Sobig/Swen succeeded because `qpatch.exe` looked plausible. Code signing + attachment sandboxing per [CISA's phishing guidance](https://www.cisa.gov/topics/cybersecurity-best-practices) closes it. For the enterprise cost lens, see our [token-cost and verification analysis](/articles/ai-costs-continue-to-rise-despite-falling-token-prices-180461) — verification overhead is the same problem in a new costume.
+
+## Full archive — 17 primary sources
+
+- [Windows Vulnerability Scans Increase — Worm Likely to Follow](/articles/windows-vulnerability-scans-increase-worm-likely-to-follow-31296)
+- [Windows Threat Realized — Blaster Spreads](/articles/windows-threat-realized-blaster-worm-spreads-31315)
+- [Windows Attack Tools Circulate — Another Virus Feared](/articles/windows-attack-tools-circulate-another-virus-feared-31603)
+- [Worm Takes Toll — Microsoft Attack Set](/articles/worm-takes-toll-microsoft-attack-set-31334)
+- [Computer Viruses and Organized Crime — The Inside Story](/articles/computer-viruses-and-organized-crime-the-inside-story-31679)
+- [Profile of the Superworm Sobig.E Exposed](/articles/profile-of-the-superworm-sobig-e-exposed-31321)
+- [Sobig.F Piles On — The Worm Effect](/articles/sobig-f-piles-on-the-worm-effect-31408)
+- [Spreading Sobig.F Variant — Fastest Outbreak Ever](/articles/spreading-sobig-f-variant-fastest-outbreak-ever-31393)
+- [Newest Worms Dominate Ugly Month](/articles/newest-worms-dominate-ugly-month-31477)
+- [Swen Worm Infects Over 1.5 Million Computers](/articles/swen-worm-infects-over-1-5-million-computers-31632)
+- [Blaster Variant Suspect Arrested](/articles/blaster-variant-suspect-arrested-31699)
+- [Authorities Investigate Romanian Virus Writer](/articles/authorities-investigate-romanian-virus-writer-31500)
+- [Feds Nab Blaster Suspect — Tracking Sobig.F Writer](/articles/feds-nab-blaster-suspect-continue-tracking-sobig-f-writer-31462)
+- [No Patch Yet for Internet Explorer QHost-1 Trojan](/articles/no-patch-yet-for-internet-explorer-qhost-1-trojan-31752)
+- [Symantec Preempts Virus Fight on Handhelds](/articles/symantec-preempts-virus-fight-on-handhelds-31419)
+- [Latest Windows Flaws Foretell Worm Threat](/articles/latest-windows-flaws-foretell-worm-threat-31134)
+- [Mimail E-Mail Worm Spreads Quickly](/articles/mimail-e-mail-worm-spreads-quickly-31256)
+
+<Callout type="success" title="For builders and defenders">
+  If you run Windows or email today, you can test the 2003 fix in an afternoon: (1) check your KEV patch SLA per [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), (2) verify RPC/135 is not internet-exposed per [NIST CSF](https://www.nist.gov/cyberframework), (3) confirm attachment sandboxing per [CISA phishing guidance](https://www.cisa.gov/topics/cybersecurity-best-practices). Those three checks are the whole pillar.
+</Callout>
+
+## Related Reading
+
+- [FBI and EPA Warn of Cyberattacks on Water Facilities](/articles/fbi-epa-warn-of-cyberattacks-on-water-wastewater-facilities-180477) — modern KEV in critical infrastructure
+- [Invisible AI Agents Creating New Enterprise Security Risks](/articles/invisible-ai-agents-creating-new-enterprise-security-risks-180514) — the 2026 version of "user is the exploit"
+- [Billions of Stolen Browser Cookies Expose Users](/articles/billions-of-stolen-browser-cookies-expose-users-to-account-hijacking-180479) — credential theft at scale
+
+## Frequently Asked Questions
+
+### Why consolidate 17 articles into one pillar?
+
+Because they describe one attack surface (unpatched edge + trusted email) exploited by three worms. Consolidation gives [CISA KEV](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) and [NIST CSF](https://www.nist.gov/cyberframework) a single canonical URL to cite, and prevents 17 thin pages from competing for "2003 worm" intent.
+
+### What was the single biggest failure in 2003?
+
+The 26-day patch window (MS03-026 July 16 → Blaster Aug 11) with no enforced deadline. [BOD 22-01](https://www.cisa.gov/news-events/directives/bod-22-01) now mandates 15 days for KEVs — a policy fix for the same failure.
+
+### How does this relate to zero-trust today?
+
+Directly. 2003's flat network with reachable RPC is the anti-pattern [NIST SP 800-207](https://csrc.nist.gov/publications/detail/sp/800-207/final) was written to kill. Segment, least privilege, continuous verification — the pillar's three controls.
+
+## Sources & methodology
+
+- Primary: 17 ThinkMode dispatches listed above (July–Sept 2003, preserved as historical archive with `Historical Archive` callout)
+- External: [Microsoft MS03-026](https://learn.microsoft.com/en-us/security-updates/securitybulletins/2003/ms03-026), [CISA TA03-260A](https://www.cisa.gov/news-events/alerts/2003/08/11/blaster-worm), [CISA KEV Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog), [NIST CSF 2.0](https://www.nist.gov/cyberframework), [Symantec Blaster](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/blaster-worm), [Symantec Swen](https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/w32-swen)

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { Icon } from "@/components/ui/icon";
+import { VisitorCounter } from "@/components/layout/visitor-counter";
 import { siteConfig } from "@/config/site";
 
 /** Site-wide premium footer. Server component — zero JS. */
@@ -46,7 +47,11 @@ export function SiteFooter() {
           <FooterColumn title="Legal" links={siteConfig.footer.legal} />
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center">
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 border-t border-border pt-6">
+          <VisitorCounter />
+        </div>
+
+        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center">
           <p className="text-xs text-text-tertiary">
             © {year} {siteConfig.name}. All rights reserved.
           </p>

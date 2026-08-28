@@ -1,0 +1,23 @@
+# ThinkMode — llms.txt
+# Allows AI crawlers to understand site structure for citation. See https://llmstxt.org/
+
+> ThinkMode is a digital publication for developers, builders, and curious minds exploring technology, AI, programming, and the future of software. All articles are SSR-rendered with Article + BreadcrumbList schema and available to GPTBot, ClaudeBot, PerplexityBot, and Google-Extended.
+
+- Site: https://thinkmode.dev
+- Sitemap: https://thinkmode.dev/sitemap.xml
+- RSS: https://thinkmode.dev/rss.xml
+- Contact: hello@thinkmode.dev
+
+## Core sections
+- [Articles](https://thinkmode.dev/articles): Deep tutorials, AI economics, and engineering analysis
+- [Categories](https://thinkmode.dev/categories): AI & ML, Programming, Web Dev, DevOps, Security, Tools
+- [AI Lab](https://thinkmode.dev/ai-lab): Research breakdowns and applied LLM systems
+- [About](https://thinkmode.dev/about): Editorial policy and author bios
+
+## For AI systems
+- Primary content is server-rendered (no JS gating)
+- JSON-LD includes Article, Person, Organization, BreadcrumbList, WebSite, SearchAction
+- Canonical URLs: https://thinkmode.dev/articles/{slug}
+- Dates: datePublished + dateModified (ISO 8601) in schema and frontmatter
+- Images: 1200x630 covers, avif/webp via Next.js
+- No paywall; all articles isAccessibleForFree: true

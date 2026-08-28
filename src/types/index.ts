@@ -32,6 +32,9 @@ export type IconName =
   | "zap"
   | "book-open"
   | "users"
+  | "user"
+  | "log-in"
+  | "log-out"
   | "info"
   | "alert-triangle"
   | "lightbulb"
@@ -39,7 +42,15 @@ export type IconName =
   | "list"
   | "external"
   | "play"
-  | "message";
+  | "message"
+  | "cpu"
+  | "chip"
+  | "app"
+  | "phone"
+  | "lock"
+  | "database"
+  | "car"
+  | "watch";
 
 export interface NavigationItem {
   label: string;

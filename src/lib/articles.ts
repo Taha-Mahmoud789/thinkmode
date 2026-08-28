@@ -14,8 +14,8 @@ import type {
 } from "@/types";
 
 const CONTENT_DIR = path.join(process.cwd(), "src", "content", "articles");
-/** Real generated cover images live here (ChatGPT-generated PNGs). */
-const REAL_COVERS_DIR = path.join(process.cwd(), "public", "articles");
+/** Real generated cover images live here (ChatGPT-generated PNGs / scrap JPGs). */
+const REAL_COVERS_DIR = path.join(process.cwd(), "public");
 
 /**
  * Cover resolution order:
@@ -24,13 +24,32 @@ const REAL_COVERS_DIR = path.join(process.cwd(), "public", "articles");
  * 3. Deterministic generative SVG route (/covers/<slug>)
  */
 function resolveCover(slug: string, explicitImage?: string): string {
-  if (explicitImage) return explicitImage;
-  try {
-    if (fs.existsSync(path.join(REAL_COVERS_DIR, `${slug}.jpg`))) {
-      return `/articles/${slug}.jpg`;
+  // If explicit image exists on disk, use it; otherwise fall through to checks
+  if (explicitImage) {
+    try {
+      const fileName = path.basename(explicitImage);
+      // explicitImage is like "/article-slug.jpg" → check public/article-slug.jpg
+      if (fileName && fs.existsSync(path.join(REAL_COVERS_DIR, fileName))) {
+        return explicitImage;
+      }
+      // Also try slug-based check for legacy
+      if (fs.existsSync(path.join(REAL_COVERS_DIR, `${slug}.jpg`))) {
+        return `/article-${slug}.jpg`;
+      }
+    } catch {
+      // Fall through to SVG cover
     }
-  } catch {
-    // Filesystem unavailable — fall through to the SVG cover.
+  } else {
+    try {
+      if (fs.existsSync(path.join(REAL_COVERS_DIR, `${slug}.jpg`))) {
+        return `/article-${slug}.jpg`;
+      }
+      if (fs.existsSync(path.join(REAL_COVERS_DIR, `article-${slug}.jpg`))) {
+        return `/article-${slug}.jpg`;
+      }
+    } catch {
+      // Fall through to SVG cover
+    }
   }
   return `/covers/${slug}`;
 }

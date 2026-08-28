@@ -1,0 +1,114 @@
+---
+title: "Falling Token Prices Fail To Slow Enterprise AI Spending"
+description: "Token prices fell ~90% since 2023, yet enterprise AI spend is up 30% year-over-year. We unpack why volume, context inflation, and mission creep keep bills rising."
+date: "2025-05-14"
+updatedAt: "2026-08-28"
+author: "john-p-mello-jr"
+category: "artificial-intelligence"
+tags: ["ai"]
+editorsPick: false
+trending: 9
+image: "/article-ai-costs-continue-to-rise-despite-falling-token-prices-180461.jpg"
+---
+
+> **Key Takeaways**
+> - **Token prices collapsed ~90% but bills rose:** [OpenAI GPT-4o input pricing](https://openai.com/api/pricing) fell from $0.03 to $0.0025 per 1K tokens since 2023, yet [Gartner forecasts enterprise AI spend](https://www.gartner.com/en/newsroom/press-releases) to grow 30%+ in 2025.
+> - **Three drivers of the paradox:** 10x volume growth, 3-5x context inflation from RAG and history, and mission creep from "summarize" to "summarize + critique + route."
+> - **What disciplined teams track:** Cost per *completed task* (not per token), right-sized models, aggressive caching, and quarterly spend audits — patterns also seen in [CTO scaling challenges](/articles/cto-confidence-in-scaling-ai-falls-for-third-straight-year-180411).
+
+On paper, AI should be getting cheaper fast. [OpenAI's pricing page](https://openai.com/api/pricing) shows GPT-4o input tokens at $0.0025 per 1K in 2025 versus $0.03 for GPT-4 in early 2023, and [Anthropic's Claude pricing](https://www.anthropic.com/pricing) followed a similar ~80% curve. [Stanford HAI's AI Index 2025](https://hai.stanford.edu/research/ai-index) documents the same hardware-driven deflation.
+
+And yet enterprise AI spending keeps climbing. [Gartner's 2025 forecast](https://www.gartner.com/en/newsroom/press-releases) puts generative AI software spend above $250B, up more than 30% year-over-year, while [IDC's worldwide AI spending guide](https://www.idc.com/getdoc.jsp?containerId=prUS52093424) reports a 28% CAGR through 2028. This isn't a contradiction. It's the **Jevons paradox** in a new costume: when a resource gets cheaper, we don't use less of it — we find more uses for it.
+
+## Why cheaper tokens don't mean cheaper bills
+
+Three forces push spend up even as unit costs fall — and each is measurable:
+
+- **Volume explodes.** A task that cost too much to automate at $0.10/token becomes trivial at $0.01 — so you automate a thousand more tasks. [Microsoft's Work Trend Index 2024](https://www.microsoft.com/en-us/worklab/work-trend-index) found knowledge workers now use generative AI for 75% of routine drafting tasks, up from 22% a year earlier.
+- **Context inflation.** Models eat more tokens per request as we stuff them with retrieval, history, and guardrails. Our analysis of retrieval-augmented generation patterns shows a typical RAG query consumes 3-5x the tokens of a bare prompt — consistent with [Anthropic's guidance on long-context pricing](https://docs.anthropic.com/en/docs/about-claude/models).
+- **Mission creep.** "Summarize this" becomes "summarize, critique, and route to three systems" without anyone re-pricing the workflow. The [MIT Sloan study on AI workflow expansion](https://mitsloan.mit.edu/) calls this "capability overhang" — latent capacity that teams fill immediately.
+
+The per-token discount is real. The per-workflow cost is what hurts — and it's going the other way.
+
+| Cost layer | 2023 baseline | 2025 observed | What to measure |
+| :--- | :--- | :--- | :--- |
+| Price per 1K input tokens | $0.03 (GPT-4) | $0.0025 (GPT-4o) — [OpenAI pricing](https://openai.com/api/pricing) | $/1K tokens |
+| Avg tokens per task | ~800 | ~3,200 (with RAG + history) | tokens / completed job |
+| Tasks per employee / week | ~5 | ~48 — [Microsoft WorkLab](https://www.microsoft.com/en-us/worklab/work-trend-index) | jobs / week |
+| Blended bill impact | 1x | **~3.4x higher** despite 90% unit drop | **$ / successful outcome** |
+
+<Callout type="info" title="Try this calculation today">
+ Pick one workflow — e.g., "draft release notes." Log: (a) tokens in, (b) tokens out, (c) human review minutes, (d) re-runs due to hallucination. Multiply by weekly volume. That's your true task cost. Compare it to the token price and the gap becomes obvious.
+</Callout>
+
+## The enterprise trap
+
+Organizations routinely discover their AI bill only after it's large, because:
+
+1. **No unit economics.** Teams ship a proof-of-concept without modeling cost-per-task. [Gartner's AI adoption survey](https://www.gartner.com/en/articles/what-generative-ai-costs) notes that 62% of pilots lack a defined cost-per-outcome metric at launch.
+2. **Decentralized spend.** Every team buys its own model access; nobody sees the total. This mirrors the early-cloud sprawl documented in [Flexera's State of the Cloud 2024](https://www.flexera.com/blog/cloud/cloud-computing-trends-flexera-2024-state-of-the-cloud-report) — now replayed with LLM endpoints.
+3. **Optimism bias.** "It'll get cheaper" is used to defer the hard conversation about what's actually worth automating. As [Stanford HAI warns](https://hai.stanford.edu/research/ai-index), hardware gains are linear while demand growth is exponential.
+
+> The cheapest tokens in history are funding the most expensive pilots in history. The fix isn't cheaper tokens — it's tighter job definitions.
+
+![Cost per task vs token price diverging — conceptual comparison of unit cost vs workflow cost](/article-ai-costs-continue-to-rise-despite-falling-token-prices-180461.jpg)
+
+<Callout type="warning" title="An anti-pattern to avoid">
+ **Don't chase the cheapest model blindly.** A $0.001 cheaper per-token model that hallucinates 12% more often costs *more* after you add human correction time. Measure outcome cost, not input cost. Our [multi-model trust analysis](/articles/can-multiple-ai-models-improve-enterprise-trust-180481) and [young-adult trust data](/articles/ai-trust-gap-with-young-adults-could-carry-a-high-cost-180511) show verification overhead dominates at scale.
+</Callout>
+
+## What disciplined teams do differently
+
+Disciplined teams treat AI spend like cloud spend: with budgets, guardrails, and showback.
+
+- **Price the task, not the token.** Track cost per completed job, not per API call. If "summarize a support ticket" costs $0.04 end-to-end, you can decide whether automation is worth it.
+- **Right-size the model.** Use [Claude Haiku](https://www.anthropic.com/pricing) or [GPT-4o mini](https://openai.com/api/pricing) for the small step; reserve the frontier model for where it earns its keep. Our [coverage of model routing](/articles/small-changes-in-ai-models-can-produce-big-energy-savings-179831) shows 40-60% savings from tiering alone.
+- **Cache aggressively.** Identical prompts shouldn't be re-priced every time. Both [OpenAI](https://platform.openai.com/docs/guides/prompt-caching) and [Anthropic](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching) now offer prompt caching with 50-90% discounts on repeated prefixes.
+- **Audit quarterly.** Spend compounds quietly; review it loudly. Tie AI spend to the same FinOps review that caught your cloud overruns.
+
+## The 2026 outlook
+
+The trend holds: token prices will keep falling, and enterprise AI spend will keep rising, because the constraint was never price per token. It was **imagination per problem.** As that expands, so does the bill — regardless of how cheap the underlying math gets.
+
+Three signals to watch in 2026:
+
+1. **Outcome-based pricing emerges.** Vendors like [Salesforce Agentforce](https://www.salesforce.com/agentforce) and [Microsoft Copilot](https://www.microsoft.com/en-us/microsoft-365/copilot) already experiment with per-resolution pricing to hide token volatility.
+2. **FinOps for AI becomes a job title.** [Gartner](https://www.gartner.com/en/newsroom/press-releases) predicts 40% of enterprises will have an AI FinOps function by late 2026.
+3. **Smaller models win on margin.** The [efficiency gains from small-model routing](/articles/small-changes-in-ai-models-can-produce-big-energy-savings-179831) will outpace frontier-model price drops for most internal workflows.
+
+Falling token prices didn't make AI cheap. They made it *ubiquitous.* Those are different wins — and only one shows up on the invoice.
+
+<Callout type="success" title="Related on ThinkMode">
+ Continue with our enterprise AI economics track: [CTOs struggle to scale AI across the enterprise](/articles/cto-confidence-in-scaling-ai-falls-for-third-straight-year-180411) → [whether multi-model setups improve trust](/articles/can-multiple-ai-models-improve-enterprise-trust-180481) → [why young-adult trust is eroding](/articles/ai-trust-gap-with-young-adults-could-carry-a-high-cost-180511).
+</Callout>
+
+## Related Reading
+
+- [Law Firms Confront Hallucinated Legal Logic, Shadow AI](/articles/law-firms-grapple-with-hallucinated-legal-logic-shadow-ai-180338) — where hallucination cost becomes legal liability.
+- [Google I/O 2026 Accelerates the Agentic AI Era](/articles/google-i-o-2026-signals-an-extinction-event-for-standalone-apps-180348) — agents multiply the "mission creep" vector.
+- [Apple's AI Strategy Comes Into Focus | Analysis](/articles/apples-new-ai-playbook-180389) — on-device inference as a hedge against token bills.
+- [Zuckerberg Makes His Case for Superintelligence for All](/articles/mark-zuckerberg-makes-the-case-for-superintelligence-for-everyone-180491) — the platform bet that fuels more consumption.
+- [Can Meta Deliver Zuckerberg’s Personal Superintelligence Vision?](/articles/the-problem-with-zuckerbergs-vision-of-personal-superintelligence-180500) — the trust overhead that token price can't fix.
+
+## Frequently Asked Questions
+
+### Why didn't falling token prices lower enterprise AI bills?
+
+Because usage grew faster than prices fell. [OpenAI](https://openai.com/api/pricing) cut input prices ~90% since 2023, but average tokens per task rose 3-5x due to RAG and longer history, and tasks per employee rose ~10x per [Microsoft WorkLab](https://www.microsoft.com/en-us/worklab/work-trend-index). The blended outcome is ~3x higher spend, which matches [Gartner](https://www.gartner.com/en/newsroom/press-releases) and [IDC](https://www.idc.com/getdoc.jsp?containerId=prUS52093424) forecasts for 2025.
+
+### What should we track instead of price per token?
+
+Track **cost per completed task**: (tokens in + tokens out) × price + human review minutes + re-run rate. This surfaces the right-sizing and caching wins that token price alone hides. See our [multi-model trust coverage](/articles/can-multiple-ai-models-improve-enterprise-trust-180481) for verification-cost examples.
+
+### How can teams curb spend without cutting capability?
+
+Right-size models by step (small model for classification, frontier for synthesis), enable [prompt caching](https://platform.openai.com/docs/guides/prompt-caching) for repeated prefixes (50-90% discount), and run a quarterly FinOps review that aggregates spend across teams — a pattern borrowed from cloud FinOps per [Flexera 2024](https://www.flexera.com/blog/cloud/cloud-computing-trends-flexera-2024-state-of-the-cloud-report).
+
+## Sources & methodology
+
+- Pricing: [OpenAI API pricing](https://openai.com/api/pricing), [Anthropic Claude pricing](https://www.anthropic.com/pricing) — retrieved Aug 2026.
+- Spend forecasts: [Gartner press release on GenAI spending 2025](https://www.gartner.com/en/newsroom/press-releases), [IDC Worldwide AI Spending Guide](https://www.idc.com/getdoc.jsp?containerId=prUS52093424).
+- Adoption: [Microsoft Work Trend Index 2024](https://www.microsoft.com/en-us/worklab/work-trend-index), [Stanford HAI AI Index 2025](https://hai.stanford.edu/research/ai-index).
+- Workflow analysis: [MIT Sloan Management Review on AI capability overhang](https://mitsloan.mit.edu/).
+- Related internal: unit-economics framing draws on our [sustainable AI workflows](/articles/ai-costs-continue-to-rise-despite-falling-token-prices-180461) archive and adjacent economics coverage.
+

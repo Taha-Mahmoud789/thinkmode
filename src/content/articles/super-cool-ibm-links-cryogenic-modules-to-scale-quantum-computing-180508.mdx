@@ -1,0 +1,78 @@
+---
+title: "Super Cool: IBM Links Quantum Fridges in Push to Scale Qubits"
+description: "IBM's linked cryostats aim for 100,000+ qubits via Starling by 2029 — how mK refrigeration, not just qubits, decides fault tolerance."
+date: "2026-08-19"
+updatedAt: "2026-08-28"
+author: "john-p-mello-jr"
+category: "emerging-tech"
+tags: ["ai"]
+editorsPick: false
+trending: 6
+image: "/article-super-cool-ibm-links-cryogenic-modules-to-scale-quantum-computing-180508.jpg"
+---
+
+> **Key Takeaways**
+> - **Cryo is the scaling wall:** IBM's new [cryogenic modules (June 2025)](https://research.ibm.com/blog/quantum-cryogenic-infrastructure) link dilution fridges at 15mK to host 100K+ qubits for [Starling (2029)](https://www.ibm.com/quantum/roadmap) — the bottleneck was refrigeration, not gates, per [IBM Research](https://research.ibm.com/blog/quantum-roadmap-starling).
+> - **Why linking matters:** One fridge caps ~5K qubits; Starling needs 200 logical qubits (~100K physical with [surface code](https://arxiv.org/abs/1208.0928)) — linking is the only path without new physics, per [Nature 2024 on modular quantum](https://www.nature.com/articles/s41586-024-07320-3).
+> - **What to watch:** Coherence at scale, not qubit count. Track [IBM's Eagle → Condor → Starling fidelity](https://quantum.ibm.com/) and [QEC overhead](https://arxiv.org/abs/1208.0928) — not press releases.
+
+Markets move on narratives, but infrastructure moves on constraints. IBM's linked cryogenic modules — dilution fridges stitched into one mK environment — mark a step toward scaling quantum computers from hundreds to hundreds of thousands of qubits as it pursues fault-tolerant [Quantum Starling by 2029](https://www.ibm.com/quantum/roadmap). The story is less about "more qubits" than about refrigeration as infrastructure.
+
+![IBM cryogenic modules — linking fridges at 15mK for scale](/article-super-cool-ibm-links-cryogenic-modules-to-scale-quantum-computing-180508.jpg)
+
+## The hype discount — why cryo decides
+
+Every emerging category carries a hype premium that distorts expectation. For quantum, the premium is qubit count without context. The disciplined metric is *logical qubits at useful fidelity*.
+
+A logical qubit per [surface code (Fowler et al. 2012)](https://arxiv.org/abs/1208.0928) needs ~500 physical qubits today. Starling's target of 200 logical qubits implies ~100K physical — far beyond one fridge's ~5K cap per [IBM Research June 2025](https://research.ibm.com/blog/quantum-cryogenic-infrastructure). Linking fridges at 15mK is not a nice-to-have; it's the road.
+
+<Callout type="info" title="The 15mK number in context">
+  Superconducting qubits live at 15 milliKelvin — colder than outer space — to preserve coherence per [Kjaergaard et al., Annual Review 2020](https://doi.org/10.1146/annurev-conmatphys-031119-050605). Every cable crossing a thermal stage leaks heat. Linking modules *without* breaking that budget is the engineering win IBM claims in [its June 2025 blog](https://research.ibm.com/blog/quantum-cryogenic-infrastructure).
+</Callout>
+
+## The incumbent's dilemma — build, buy, or wait
+
+Established players face a choice when emerging tech arrives: adopt and cannibalize, or ignore and risk irrelevance. For IBM vs [Google Quantum AI](https://quantumai.google/) vs [Intel](https://www.intel.com/content/www/us/en/research/quantum-computing.html), the window is the [Quantum Roadmap](https://www.ibm.com/quantum/roadmap): Loon (2025) tests linking, Starling (2029) needs it. The bet is separate P&L, not a line item.
+
+| Roadmap node | Physical qubits | Logical target | Cryo need | Source |
+| :--- | :--- | :--- | :--- | :--- |
+| Eagle (2021) | 127 | 0 | Single fridge | [IBM Quantum](https://quantum.ibm.com/) |
+| Condor (2023) | 1,121 | 0 | Single, limits seen | [IBM](https://www.ibm.com/quantum/roadmap) |
+| Loon (2025) | ~2K | Test | Linked modules pilot | [IBM June 2025](https://research.ibm.com/blog/quantum-cryogenic-infrastructure) |
+| Starling (2029) | ~100K | 200 | Linked at 15mK | [IBM Roadmap](https://www.ibm.com/quantum/roadmap) |
+
+## What would have to be true
+
+To take Starling seriously, three preconditions must hold per [Nature 2024 on modular scaling](https://www.nature.com/articles/s41586-024-07320-3):
+
+1. **Link fidelity holds at 15mK.** Inter-module gates must not add dephasing — IBM's claim to watch in 2025 Loon data.
+2. **QEC overhead falls.** Surface code 500:1 must improve via [qLDPC codes](https://arxiv.org/abs/2204.02930) to make 100K tractable.
+3. **A problem worth 200 logical qubits exists at paying-customer cost.** Per [McKinsey Quantum 2024](https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/quantum-computing-funding-remains-strong-but-talent-gap-raises-concern), enterprise advantage today is still classical + quantum hybrid.
+
+<Callout type="warning" title="The valley">
+  Between 'interesting' and 'infrastructure' lies boring integration — standards ([IEEE Quantum](https://quantum.ieee.org/)), tooling ([Qiskit](https://qiskit.org/)), and training. That's where Starling lives until 2029. The link is necessary, not sufficient.
+</Callout>
+
+## Related Reading
+
+- [Small Changes, Big Energy Savings](/articles/small-changes-in-ai-models-can-produce-big-energy-savings-179831) — the classical efficiency bet that buys quantum time
+- [Why Makululinux AI-OS Became Daily Driver](/articles/why-makululinux-ai-os-became-my-new-daily-driver-177752) — open vs closed stack, same dilemma
+
+## Frequently Asked Questions
+
+### Why link fridges instead of building one big fridge?
+
+Heat budget. A single dilution stage leaks ~1µW at 15mK per [Kjaergaard et al.](https://doi.org/10.1146/annurev-conmatphys-031119-050605). Linking keeps each stage near budget; one giant fridge would need new materials. Modular is the [Nature-approved path](https://www.nature.com/articles/s41586-024-07320-3).
+
+### Is 200 logical qubits enough?
+
+For early fault tolerance, yes — enough for [quantum chemistry and optimization demos](https://www.ibm.com/quantum/roadmap) per IBM, not yet for Shor at RSA-2048 scale which needs ~4000 logical per [Fowler et al.](https://arxiv.org/abs/1208.0928).
+
+### How does this compare to Google/Intel?
+
+Google's [Sycamore roadmap](https://quantumai.google/) bets on single-chip scale; Intel on [silicon spin qubits](https://www.intel.com/content/www/us/en/research/quantum-computing.html) at higher temp. IBM's link is the *cryo-modular* bet — distinct, testable by Loon fidelity data.
+
+## Sources & methodology
+
+- IBM: [Quantum Roadmap](https://www.ibm.com/quantum/roadmap), [Cryogenic Infrastructure June 2025](https://research.ibm.com/blog/quantum-cryogenic-infrastructure), [Quantum Starling blog](https://research.ibm.com/blog/quantum-roadmap-starling)
+- Science: [Fowler et al. Surface Code 2012](https://arxiv.org/abs/1208.0928), [Kjaergaard et al. 2020](https://doi.org/10.1146/annurev-conmatphys-031119-050605), [Nature 2024 Modular Quantum](https://www.nature.com/articles/s41586-024-07320-3), [qLDPC 2022](https://arxiv.org/abs/2204.02930)

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { HorizontalArticleCard } from "@/components/articles/article-card";
-import { getAllArticleMetas, getArticlesByTag, getTagsWithCounts } from "@/lib/articles";
-import { tagSlug as makeTagSlug } from "@/lib/utils";
+import { getArticlesByTag, getTagsWithCounts } from "@/lib/articles";
 
 interface TagPageProps {
   params: Promise<{ slug: string }>;

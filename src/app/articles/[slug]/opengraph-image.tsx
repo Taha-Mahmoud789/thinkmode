@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getArticleBySlug, getArticleSlugs } from "@/lib/articles";
+import { getArticleBySlug } from "@/lib/articles";
 import { initials } from "@/lib/utils";
 
 export const size = { width: 1200, height: 630 };

@@ -393,6 +393,16 @@ body {
   animation: tm-pulse-dot 2.4s ease-in-out infinite;
 }
 
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
 /* ------------------------- article typography --------------------------- */
 
 .prose-tm {

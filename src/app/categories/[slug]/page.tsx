@@ -8,6 +8,7 @@ import {
 } from "@/lib/articles";
 import { categories } from "@/data/categories";
 import { JsonLd, breadcrumbSchema, websiteSchema } from "@/lib/seo";
+import { absoluteUrl } from "@/lib/utils";
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
@@ -26,9 +27,20 @@ export async function generateMetadata({
     description: category.description,
     alternates: { canonical: `/categories/${category.slug}` },
     openGraph: {
+      type: "website",
+      url: `/categories/${category.slug}`,
+      siteName: "ThinkMode",
       title: `${category.name} — ThinkMode`,
       description: category.description,
+      images: [{ url: absoluteUrl("/article-hero-ai.jpg"), width: 1200, height: 630 }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.name} — ThinkMode`,
+      description: category.description,
+      images: [absoluteUrl("/article-hero-ai.jpg")],
+    },
+    robots: { index: true, follow: true },
   };
 }
 
@@ -49,6 +61,23 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           { name: "Categories", path: "/categories" },
           { name: category.name, path: `/categories/${category.slug}` },
         ])}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: category.name,
+          description: category.description,
+          url: absoluteUrl(`/categories/${category.slug}`),
+          isPartOf: { "@type": "WebSite", name: "ThinkMode", url: absoluteUrl("/") },
+          hasPart: articles.slice(0, 20).map((a) => ({
+            "@type": "Article",
+            headline: a.title,
+            url: absoluteUrl(a.url),
+            datePublished: a.date,
+            author: { "@type": "Person", name: a.author.name },
+          })),
+        }}
       />
 
       <header

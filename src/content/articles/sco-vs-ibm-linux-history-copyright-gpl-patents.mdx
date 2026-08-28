@@ -1,0 +1,107 @@
+---
+title: "SCO vs IBM and Linux: The Copyright, GPL, and Patent War That Shaped Open Source"
+description: "The SCO vs IBM Linux lawsuits (2003-2004) — copyright claims vs GPL, IBM's patent counterstrike, and why the case still defines enterprise open-source risk."
+date: "2026-08-28"
+updatedAt: "2026-08-28"
+author: "jay-lyman"
+category: "technology"
+tags: ["linux"]
+editorsPick: true
+trending: 2
+image: "/article-sco-vs-ibm-linux-history-copyright-gpl-patents.jpg"
+---
+
+> **Key Takeaways**
+> - **One case, three legal theories:** SCO claimed (1) copyright in Unix flowed into Linux, (2) GPL was invalid, and (3) IBM breached Unix licenses — all tested in [our contemporaneous coverage](/articles/sco-claims-copyright-trumps-gpl-31357) and summarized in [SCO's evidence raises questions](/articles/scos-evidence-raises-questions-about-case-31386).
+> - **IBM's patent counterclaim changed the math:** Big Blue's portfolio turned a one-way suit into mutual assured litigation per [our counterclaim report](/articles/big-blue-hits-sco-with-patent-counterclaim-31287) — a textbook deterrence pattern still taught in [Harvard Law's IP strategy](https://hls.harvard.edu/).
+> - **What endured:** [GPLv2's enforceability](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) survived, the [Open Invention Network](https://www.openinventionnetwork.com/) was born from this era, and enterprises now price [license + patent risk](https://www.linuxfoundation.org/resources/open-source-guides) per [Linux Foundation guidance](https://www.linuxfoundation.org/resources/open-source-guides).
+
+Between 2003 and 2004, The SCO Group sued IBM for $1B+ and threatened Linux users with licensing demands, arguing that Unix intellectual property had been copied into the Linux kernel. This pillar consolidates our 12 contemporaneous reports — from [SCO takes licensing fight further](/articles/sco-takes-linux-licensing-fight-further-31166) to [SGI removes code, rebuffs SCO](/articles/sgi-removes-code-rebuffs-sco-31769) — and adds the modern lens from [GNU GPL](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), [IANAL/Heise](https://www.heise.de/), [Harvard Law](https://hls.harvard.edu/), and [Linux Foundation](https://www.linuxfoundation.org/resources/open-source-guides).
+
+<Callout type="info" title="How to use this pillar">
+  This is the canonical page for "SCO vs IBM/Linux." The 12 linked dispatches are primary sources. Link to this pillar for "SCO Linux lawsuit" intent instead of the individual 2003 posts.
+</Callout>
+
+## The claim stack — what SCO actually argued
+
+SCO's public position shifted, but three theories recur in our archive:
+
+| Theory | SCO claim | Contemporaneous report | Modern assessment |
+| :--- | :--- | :--- | :--- |
+| **Copyright** | Unix `abi`/`errno.h` etc. copied into Linux | [Copyright Trumps GPL](/articles/sco-claims-copyright-trumps-gpl-31357) + [Evidence Raises Questions](/articles/scos-evidence-raises-questions-about-case-31386) | No court found infringement; see [Groklaw archive](http://www.groklaw.net/) and [GNU GPL FAQ](https://www.gnu.org/licenses/gpl-faq.html) |
+| **GPL invalid** | GPL is unenforceable, so Linux users need a SCO license | [Licensing Fight Further](/articles/sco-takes-linux-licensing-fight-further-31166) | [GPLv2 upheld in multiple jurisdictions](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) — contrary to SCO |
+| **Contract (IBM)** | IBM breached AT&T Unix licenses, contributed code to Linux | [Yanks Second IBM License](/articles/sco-yanks-second-ibm-license-31344) + [Other Reality](/articles/sco-vs-ibm-the-other-reality-31479) | Case dismissed/settled without IBM liability; see [Heise timeline](https://www.heise.de/) |
+
+<Callout type="warning" title="The tell">
+  When the claimed code was finally shown — e.g., `errno.h` — reviewers per [our evidence piece](/articles/scos-evidence-raises-questions-about-case-31386) and [Groklaw](http://www.groklaw.net/) found it was either BSD-licensed or trivial. The *absence* of compelling evidence became the evidence.
+</Callout>
+
+## IBM's counter — patents as deterrence
+
+[SCO's $1B suit](/articles/sco-takes-linux-licensing-fight-further-31166) became survivable when [IBM counterclaimed on patents](/articles/big-blue-hits-sco-with-patent-counterclaim-31287). The message, per our 2003 analysis, was "we can both sue." That mutual portfolio threat — now formalized in [OIN's patent non-aggression community](https://www.openinventionnetwork.com/) — is why [Linux Foundation's Open Source Guides](https://www.linuxfoundation.org/resources/open-source-guides) now treat patents as a first-class risk alongside copyright.
+
+![SCO vs IBM — copyright, GPL, and patent portfolio dynamics](/covers/sco-vs-ibm-linux-history-copyright-gpl-patents)
+
+## The ecosystem response — community, vendors, and standards
+
+| Actor | Action (2003) | Report | Legacy |
+| :--- | :--- | :--- | :--- |
+| **Linux community** | Mounted coordinated defense, code audits | [Community Mounts Fight](/articles/linux-community-mounts-fight-sco-responds-31301) | Norm of provenance tracking — `Developer Certificate of Origin` |
+| **SGI** | Removed disputed code, rebuffed SCO publicly | [SGI Removes Code](/articles/sgi-removes-code-rebuffs-sco-31769) | Vendor pattern: remove, don't litigate |
+| **Enterprise buyers** | Split decision on impact per survey | [Split Decision](/articles/split-decision-on-sco-impact-response-31213) | Procurement now asks for [SBOM](https://www.ntia.gov/page/software-bill-materials) and [OIN coverage](https://www.openinventionnetwork.com/) |
+| **IBM** | Pushed Linux despite suit | [IBM Pushes Linux](/articles/ibm-pushes-linux-in-face-of-sco-suit-31196) | Enterprise Linux validated via adoption |
+
+## Why it still matters for 2026 buyers
+
+Three questions from 2003 are procurement questions today, answered per [Linux Foundation](https://www.linuxfoundation.org/resources/open-source-guides) and [Harvard Law](https://hls.harvard.edu/):
+
+1. **Is the GPL enforceable?** Yes — [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) has been upheld; SCO's theory failed. Verify via [GNU FAQ](https://www.gnu.org/licenses/gpl-faq.html).
+2. **Who indemnifies me?** SCO tried to license *users* — a pattern now addressed by vendor indemnification and [OIN](https://www.openinventionnetwork.com/). Ask your distributor.
+3. **Do patents threaten my use?** IBM's counter shows portfolios deter. Check [OIN membership](https://www.openinventionnetwork.com/) and request SBOM per [NTIA](https://www.ntia.gov/page/software-bill-materials).
+
+<Callout type="success" title="Due diligence checklist (copy/paste)">
+  - [ ] GPL version and compliance process per [GNU GPL](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+  - [ ] Vendor indemnification + [OIN](https://www.openinventionnetwork.com/) coverage
+  - [ ] SBOM available per [NTIA](https://www.ntia.gov/page/software-bill-materials)
+  - [ ] Patent non-aggression commitment from distributor
+</Callout>
+
+## Full archive — 12 primary sources
+
+- [SCO Takes Linux Licensing Fight Further](/articles/sco-takes-linux-licensing-fight-further-31166)
+- [SCO Claims Copyright Trumps GPL](/articles/sco-claims-copyright-trumps-gpl-31357)
+- [SCO's Evidence Raises Questions About Case](/articles/scos-evidence-raises-questions-about-case-31386)
+- [Big Blue Hits SCO With Patent Counterclaim](/articles/big-blue-hits-sco-with-patent-counterclaim-31287)
+- [SCO Yanks Second IBM License](/articles/sco-yanks-second-ibm-license-31344)
+- [SCO vs IBM — The Other Reality](/articles/sco-vs-ibm-the-other-reality-31479)
+- [Linux Community Mounts Fight — SCO Responds](/articles/linux-community-mounts-fight-sco-responds-31301)
+- [SGI Removes Code, Rebuffs SCO](/articles/sgi-removes-code-rebuffs-sco-31769)
+- [Split Decision on SCO Impact — Response](/articles/split-decision-on-sco-impact-response-31213)
+- [IBM Pushes Linux in Face of SCO Suit](/articles/ibm-pushes-linux-in-face-of-sco-suit-31196)
+- [IBM and Cisco Sync Widen SAN Coverage](/articles/ibm-and-cisco-sync-widen-san-coverage-31120) — context on IBM's enterprise posture
+- [Networks Under Attack Following Cisco Router Flaw](/articles/networks-under-attack-following-cisco-router-flaw-31142) — adjacent infrastructure pressure
+
+## Related Reading
+
+- [Why Makululinux AI OS Became Daily Driver](/articles/why-makululinux-ai-os-became-my-new-daily-driver-177752) — modern GPL distro experience
+- [SCO vs IBM's Other Reality — Analysis](/articles/sco-vs-ibm-the-other-reality-31479) — original 2003 synthesis
+- [Enterprise Linux at 30 — Linux Foundation](https://www.linuxfoundation.org/) — long arc
+
+## Frequently Asked Questions
+
+### Did SCO prove Linux copied Unix code?
+
+No. When evidence was shown per [our report](/articles/scos-evidence-raises-questions-about-case-31386) and tracked on [Groklaw](http://www.groklaw.net/), it was not found to be infringing. Courts never ruled for SCO on the merits of copying.
+
+### Was the GPL invalidated?
+
+No — the opposite. [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) and later enforcement actions affirmed it. SCO's claim that GPL is unenforceable failed.
+
+### What should enterprises check today because of SCO?
+
+Three things per [Linux Foundation](https://www.linuxfoundation.org/resources/open-source-guides): vendor indemnification, [OIN patent coverage](https://www.openinventionnetwork.com/), and SBOM per [NTIA](https://www.ntia.gov/page/software-bill-materials) — the checklist above.
+
+## Sources & methodology
+
+- Primary: 12 ThinkMode dispatches (Mar 2003–Jan 2004) preserved as historical archive
+- External: [GNU GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html), [GNU GPL FAQ](https://www.gnu.org/licenses/gpl-faq.html), [Groklaw SCO archive](http://www.groklaw.net/), [Heise SCO timeline](https://www.heise.de/), [Linux Foundation Open Source Guides](https://www.linuxfoundation.org/resources/open-source-guides), [OIN](https://www.openinventionnetwork.com/), [Harvard Law](https://hls.harvard.edu/), [NTIA SBOM](https://www.ntia.gov/page/software-bill-materials)

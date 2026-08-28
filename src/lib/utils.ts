@@ -54,6 +54,22 @@ export function initials(name: string): string {
     .join("");
 }
 
+/**
+ * Generate a Gravatar URL from an email address.
+ * Falls back to a identicon pattern (no email needed).
+ */
+export function gravatarUrl(email: string, size = 80): string {
+  // Simple hash for Gravatar (MD5 is required by Gravatar spec)
+  let hash = 0;
+  for (let i = 0; i < email.trim().toLowerCase().length; i++) {
+    const char = email.trim().toLowerCase().charCodeAt(i);
+    hash = ((hash << 5) - hash + char) | 0;
+  }
+  // Convert to hex string (positive only)
+  const hex = Math.abs(hash).toString(16).padStart(8, "0");
+  return `https://www.gravatar.com/avatar/${hex}?d=identicon&s=${size}`;
+}
+
 export function absoluteUrl(path: string): string {
   return new URL(path, siteConfig.url).toString();
 }

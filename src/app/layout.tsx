@@ -2,10 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { Analytics } from "@/components/analytics/analytics";
+import { AuthProvider } from "@/components/auth/auth-provider";
 import { fontVariables } from "@/config/fonts";
 import { themeInitScript } from "@/components/layout/theme-toggle";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
+import { JsonLd, websiteSchema, organizationSchema } from "@/lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -62,6 +65,8 @@ export default function RootLayout({
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
         <template dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <JsonLd data={websiteSchema()} />
+        <JsonLd data={organizationSchema()} />
       </head>
       <body
         className={`${fontVariables} flex min-h-screen flex-col`}
@@ -74,10 +79,13 @@ export default function RootLayout({
           Skip to content
         </a>
         <ScrollProgress />
-        <SiteHeader />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
+        <Analytics />
+        <AuthProvider>
+          <SiteHeader />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+        </AuthProvider>
         <SiteFooter />
       </body>
     </html>

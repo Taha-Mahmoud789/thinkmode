@@ -38,9 +38,16 @@ function Heading({
   const id = slugify(extractText(children));
   const Tag = level === 2 ? "h2" : "h3";
   return (
-    <Tag id={id}>
-      <a href={`#${id}`} aria-label="Link to this section" className="group">
-        {children}
+    <Tag id={id} className="group scroll-mt-28">
+      {children}
+      <a
+        href={`#${id}`}
+        aria-label="Link to this section"
+        className="ml-2 inline-flex opacity-0 transition-opacity group-hover:opacity-100 no-underline"
+      >
+        <span aria-hidden="true" className="text-primary/60 group-hover:text-primary">
+          #
+        </span>
       </a>
     </Tag>
   );

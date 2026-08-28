@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { BookmarkButton } from "@/components/ui/bookmark-button";
 import { Icon } from "@/components/ui/icon";
+import { AuthorAvatar } from "@/components/ui/author-avatar";
 import type { ArticleMeta } from "@/types";
 import { cn, formatDate, formatReadingMinutes } from "@/lib/utils";
 
@@ -78,12 +79,7 @@ export function ArticleCard({ article, className = "", priority = false }: Artic
         </div>
       </div>
 
-      <BookmarkButton
-        slug={article.slug}
-        title={article.title}
-        variant="card"
-        className="absolute bottom-4 right-4 z-20"
-      />
+      <BookmarkButton slug={article.slug} inline className="absolute bottom-4 right-4 z-20" />
     </article>
   );
 }
@@ -186,12 +182,7 @@ export function HorizontalArticleCard({
         </p>
         <div className="mt-auto flex items-center gap-4 pt-3 text-xs text-text-tertiary">
           <span className="inline-flex items-center gap-1.5">
-            <span
-              aria-hidden="true"
-              className="grid h-6 w-6 place-items-center rounded-full border border-border bg-surface-2 text-[10px] font-bold text-text-secondary"
-            >
-              {article.author.name.charAt(0)}
-            </span>
+            <AuthorAvatar name={article.author.name} size="sm" />
             {article.author.name}
           </span>
           <span aria-hidden="true">·</span>

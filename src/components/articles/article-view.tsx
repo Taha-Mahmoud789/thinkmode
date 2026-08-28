@@ -8,8 +8,9 @@ import { ShareButtons } from "@/components/articles/share-buttons";
 import { TableOfContents } from "@/components/articles/table-of-contents";
 import { AdInArticle } from "@/components/ads/ad-slot";
 import { Icon } from "@/components/ui/icon";
+import { AuthorAvatar } from "@/components/ui/author-avatar";
 import { extractTocFromMdx } from "@/lib/toc";
-import { formatDate, formatReadingMinutes, initials } from "@/lib/utils";
+import { formatDate, formatReadingMinutes } from "@/lib/utils";
 
 interface ArticleViewProps {
   article: Article;
@@ -72,12 +73,7 @@ export function ArticleView({ article }: ArticleViewProps) {
 
           <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border pt-7">
             <div className="flex items-center gap-3">
-              <span
-                aria-hidden="true"
-                className="grid h-11 w-11 place-items-center rounded-full border border-border bg-surface-2 font-display text-sm font-bold text-primary-light"
-              >
-                {initials(article.author.name)}
-              </span>
+              <AuthorAvatar name={article.author.name} size="md" />
               <div>
                 <p className="text-sm font-semibold text-text">{article.author.name}</p>
                 <p className="text-xs text-text-tertiary">{article.author.role}</p>
@@ -108,7 +104,7 @@ export function ArticleView({ article }: ArticleViewProps) {
               </div>
             </dl>
             <div className="ml-auto flex items-center gap-2">
-              <BookmarkButton slug={article.slug} title={article.title} />
+              <BookmarkButton slug={article.slug} />
               <ShareButtons title={article.title} slug={article.slug} />
             </div>
           </div>
@@ -173,12 +169,7 @@ export function ArticleView({ article }: ArticleViewProps) {
           {/* author card */}
           <aside className="mt-10 rounded-2xl border border-border bg-surface p-7">
             <div className="flex items-start gap-4">
-              <span
-                aria-hidden="true"
-                className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 font-display text-base font-bold text-primary-light"
-              >
-                {initials(article.author.name)}
-              </span>
+              <AuthorAvatar name={article.author.name} size="lg" />
               <div>
                 <p className="font-display text-lg font-semibold tracking-tight text-text">
                   {article.author.name}

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { LogoLink } from "@/components/ui/logo";
 import { Icon } from "@/components/ui/icon";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { UserMenu } from "@/components/auth/user-menu";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -91,6 +92,7 @@ export function SiteHeader() {
           >
             <Icon name="search" size={17} />
           </Link>
+          <UserMenu />
           <ThemeToggle />
           <Link href="/newsletter" className="btn btn-primary btn-sm ml-1.5 hidden sm:inline-flex">
             Subscribe

@@ -38,9 +38,9 @@ export const siteConfig = {
       { label: "RSS", href: "/rss.xml" },
     ] as NavigationItem[],
     legal: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Service", href: "/terms" },
-      { label: "Cookie Policy", href: "/cookies" },
+      { label: "Privacy Policy", href: "/legal/privacy" },
+      { label: "Terms of Service", href: "/legal/terms" },
+      { label: "Cookie Policy", href: "/legal/cookies" },
     ] as NavigationItem[],
   },
 
