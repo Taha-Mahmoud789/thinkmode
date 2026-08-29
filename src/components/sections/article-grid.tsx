@@ -36,12 +36,12 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
           </h2>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:items-stretch">
           {articles.map((article, i) => (
             <Reveal key={article.slug} delay={i * 80}>
               <Link
                 href={`/articles/${article.slug}`}
-                className="group block overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
                   <img
