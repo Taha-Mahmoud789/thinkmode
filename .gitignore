@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# testing / perf reports
+lighthouse-*.json
+psi-*.json
+test-*.png
