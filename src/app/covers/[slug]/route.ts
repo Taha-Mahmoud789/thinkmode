@@ -8,7 +8,6 @@ interface CoverRouteContext {
 /**
  * Generative cover art per article: /covers/<slug>
  * Deterministic SVG — cached aggressively at the CDN edge.
- * Rendered on-demand (no static params) to avoid build-time failures.
  */
 export async function GET(
   _request: Request,
@@ -27,7 +26,7 @@ export async function GET(
   return new Response(svg, {
     headers: {
       "Content-Type": "image/svg+xml; charset=utf-8",
-      "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+      "Cache-Control": "public, max-age=31536000, immutable",
       ETag: `"cover-${slug}"`,
     },
   });

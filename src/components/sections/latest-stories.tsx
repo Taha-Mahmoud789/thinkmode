@@ -67,7 +67,7 @@ export function LatestStories({ articles, trending = [] }: LatestStoriesProps) {
                   <img
                     src={hero.cover}
                     alt=""
-                    loading="eager"
+                    loading="lazy"
                     decoding="async"
                     width={1200}
                     height={750}

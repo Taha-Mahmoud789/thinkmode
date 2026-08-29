@@ -55,8 +55,15 @@ export default function HomePage() {
     (a) => !featuredSlugs.has(a.slug) && !trendingSlugs.has(a.slug) && a.slug !== editorsPick?.slug,
   );
 
+  const leadCover = featured[0]?.cover;
+
   return (
     <>
+      {/* Preload lead cover for LCP */}
+      {leadCover && (
+        <link rel="preload" href={leadCover} as="image" fetchPriority="high" />
+      )}
+
       {/* 1. Hero — lead story + 2 briefs */}
       <EditorialLead
         lead={featured[0] ?? null}
