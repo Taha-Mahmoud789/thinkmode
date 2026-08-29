@@ -47,7 +47,7 @@ export function FeaturedGrid({ articles }: FeaturedGridProps) {
         <Reveal>
           <Link
             href={`/articles/${bundle.slug}`}
-            className="group block overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
+            className="group relative block overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
           >
             <div className="relative aspect-[21/9] overflow-hidden bg-surface-2">
               <img
@@ -60,18 +60,8 @@ export function FeaturedGrid({ articles }: FeaturedGridProps) {
                 className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10">
-                <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
-                  style={{
-                    backgroundColor: "var(--chip-bg)",
-                    color: bundle.category.accent,
-                    border: `1px solid ${bundle.category.accent}55`,
-                  }}
-                >
-                  {bundle.category.shortName}
-                </span>
-                <h3 className="mt-3 max-w-3xl font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl md:text-4xl">
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 md:p-10">
+                <h3 className="max-w-3xl font-display text-2xl font-bold leading-tight tracking-tight text-text sm:text-3xl md:text-4xl">
                   {bundle.title}
                 </h3>
                 <p className="mt-3 max-w-2xl line-clamp-2 text-sm leading-relaxed text-text-secondary sm:text-base">
@@ -89,6 +79,16 @@ export function FeaturedGrid({ articles }: FeaturedGridProps) {
                 </div>
               </div>
             </div>
+            <span
+              className="absolute left-5 top-5 z-10 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur sm:left-8 sm:top-8 md:left-10 md:top-10"
+              style={{
+                backgroundColor: "var(--chip-bg)",
+                color: bundle.category.accent,
+                border: `1px solid ${bundle.category.accent}55`,
+              }}
+            >
+              {bundle.category.shortName}
+            </span>
           </Link>
         </Reveal>
 

@@ -74,22 +74,22 @@ export function LatestStories({ articles, trending = [] }: LatestStoriesProps) {
                     height={750}
                     className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                   />
-                  <span
-                    className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
-                    style={{
-                      backgroundColor: "var(--chip-bg)",
-                      color: hero.category.accent,
-                      border: `1px solid ${hero.category.accent}55`,
-                    }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ backgroundColor: hero.category.accent }}
-                    />
-                    {hero.category.shortName}
-                  </span>
                 </div>
+                <span
+                  className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
+                  style={{
+                    backgroundColor: "var(--chip-bg)",
+                    color: hero.category.accent,
+                    border: `1px solid ${hero.category.accent}55`,
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ backgroundColor: hero.category.accent }}
+                  />
+                  {hero.category.shortName}
+                </span>
                 <div className="flex flex-col gap-3 p-6">
                   <h3 className="font-display text-xl font-semibold leading-snug tracking-tight text-text sm:text-2xl">
                     {hero.title}
@@ -130,17 +130,17 @@ export function LatestStories({ articles, trending = [] }: LatestStoriesProps) {
                           height={338}
                           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                         />
-                        <span
-                          className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
-                          style={{
-                            backgroundColor: "var(--chip-bg)",
-                            color: article.category.accent,
-                            border: `1px solid ${article.category.accent}55`,
-                          }}
-                        >
-                          {article.category.shortName}
-                        </span>
                       </div>
+                      <span
+                        className="absolute left-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
+                        style={{
+                          backgroundColor: "var(--chip-bg)",
+                          color: article.category.accent,
+                          border: `1px solid ${article.category.accent}55`,
+                        }}
+                      >
+                        {article.category.shortName}
+                      </span>
                       <div className="flex flex-col gap-2 p-5">
                         <h3 className="line-clamp-2 font-display text-base font-semibold leading-snug tracking-tight text-text transition-colors group-hover:text-primary-light">
                           {article.title}

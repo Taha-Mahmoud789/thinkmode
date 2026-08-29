@@ -42,22 +42,22 @@ export function ArticleCard({ article, className = "", priority = false }: Artic
           height={675}
           className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
-        <span
-          className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
-          style={{
-            backgroundColor: "var(--chip-bg)",
-            color: article.category.accent,
-            border: `1px solid ${article.category.accent}55`,
-          }}
-        >
-          <span
-            aria-hidden="true"
-            className="h-1.5 w-1.5 rounded-full"
-            style={{ backgroundColor: article.category.accent }}
-          />
-          {article.category.shortName}
-        </span>
       </div>
+      <span
+        className="absolute left-3.5 top-3.5 z-10 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
+        style={{
+          backgroundColor: "var(--chip-bg)",
+          color: article.category.accent,
+          border: `1px solid ${article.category.accent}55`,
+        }}
+      >
+        <span
+          aria-hidden="true"
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ backgroundColor: article.category.accent }}
+        />
+        {article.category.shortName}
+      </span>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
         <h3 className="font-display text-lg font-semibold leading-snug tracking-tight text-text">
