@@ -128,7 +128,7 @@ export function SiteHeader() {
           aria-label="Close navigation menu"
           onClick={() => setMenuOpen(false)}
           className={cn(
-            "absolute inset-0 h-full w-full cursor-default bg-black/60 backdrop-blur-sm transition-opacity duration-300",
+            "absolute inset-0 h-full w-full cursor-default bg-overlay backdrop-blur-sm transition-opacity duration-300",
             menuOpen ? "opacity-100" : "opacity-0",
           )}
         />

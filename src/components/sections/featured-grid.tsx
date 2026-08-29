@@ -64,7 +64,7 @@ export function FeaturedGrid({ articles }: FeaturedGridProps) {
                 <span
                   className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
                   style={{
-                    backgroundColor: "rgba(5,5,8,0.6)",
+                    backgroundColor: "var(--chip-bg)",
                     color: bundle.category.accent,
                     border: `1px solid ${bundle.category.accent}55`,
                   }}

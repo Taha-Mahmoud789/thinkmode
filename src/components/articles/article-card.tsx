@@ -45,7 +45,7 @@ export function ArticleCard({ article, className = "", priority = false }: Artic
         <span
           className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
           style={{
-            backgroundColor: "rgba(5,5,8,0.55)",
+            backgroundColor: "var(--chip-bg)",
             color: article.category.accent,
             border: `1px solid ${article.category.accent}55`,
           }}

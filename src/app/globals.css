@@ -37,6 +37,10 @@
   --ring: #17B89055;
 
   --shadow-color: 0deg 0% 0%;
+
+  --chip-bg: rgba(5, 5, 8, 0.55);
+  --overlay: rgba(0, 0, 0, 0.6);
+  --scrim: rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="light"] {
@@ -66,6 +70,10 @@
 
   --ring: rgba(109, 40, 217, 0.45);
   --shadow-color: 220deg 20% 55%;
+
+  --chip-bg: rgba(255, 255, 255, 0.85);
+  --overlay: rgba(0, 0, 0, 0.35);
+  --scrim: rgba(0, 0, 0, 0.25);
 }
 
 @theme inline {
@@ -90,13 +98,17 @@
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
 
+  --color-chip-bg: var(--chip-bg);
+  --color-overlay: var(--overlay);
+  --color-scrim: var(--scrim);
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --shadow-glow-sm: 0 0 0 1px rgb(23 184 144 / 0.18), 0 8px 32px -8px rgb(23 184 144 / 0.35);
-  --shadow-glow-md: 0 0 0 1px rgb(23 184 144 / 0.22), 0 20px 60px -16px rgb(23 184 144 / 0.45);
-  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.03) inset, 0 16px 40px -20px hsl(var(--shadow-color) / 0.5);
+  --shadow-glow-sm: 0 0 0 1px color-mix(in srgb, var(--primary) 18%, transparent), 0 8px 32px -8px color-mix(in srgb, var(--primary) 35%, transparent);
+  --shadow-glow-md: 0 0 0 1px color-mix(in srgb, var(--primary) 22%, transparent), 0 20px 60px -16px color-mix(in srgb, var(--primary) 45%, transparent);
+  --shadow-card: 0 1px 0 0 color-mix(in srgb, var(--surface) 97%, transparent) inset, 0 16px 40px -20px hsl(var(--shadow-color) / 0.5);
 
   --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -117,7 +129,7 @@ body {
 }
 
 ::selection {
-  background: rgb(23 184 144 / 0.35);
+  background: color-mix(in srgb, var(--primary) 35%, transparent);
   color: var(--text);
 }
 

@@ -66,7 +66,7 @@ export function TrendingRail({ articles }: TrendingRailProps) {
                   <span
                     className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
                     style={{
-                      backgroundColor: "rgba(5,5,8,0.55)",
+                        backgroundColor: "var(--chip-bg)",
                       color: article.category.accent,
                       border: `1px solid ${article.category.accent}55`,
                     }}
