@@ -1,9 +1,19 @@
+/*
+ * Covers are deterministic generated SVG routes; raster next/image
+ * optimization does not apply, so raw <img> is correct here.
+ */
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
+import { AuthorAvatar } from "@/components/ui/author-avatar";
 import type { ArticleMeta } from "@/types";
+import { formatDate, formatReadingMinutes } from "@/lib/utils";
 
-/** Full-width cinematic banner for the editor's featured story — edge-to-edge like hero. */
+/**
+ * Full-width cinematic banner for the editor's pick — uses the article's
+ * actual cover as background with gradient overlays for text readability.
+ */
 export function EditorsPickBanner({ article }: { article: ArticleMeta | null }) {
   if (!article) return null;
 
@@ -11,24 +21,25 @@ export function EditorsPickBanner({ article }: { article: ArticleMeta | null }) 
     <section
       className="relative w-full overflow-hidden"
       aria-labelledby="editors-pick-heading"
-      style={{
-        backgroundImage: 'url("/articles/editors-pick-banner.jpg")',
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
     >
-      {/* Gradient veils to blend image into page background */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent"
-      />
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src={article.cover}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          width={1920}
+          height={800}
+          className="h-full w-full object-cover"
+        />
+        {/* Gradient veils */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/30" />
+      </div>
 
-      <div className="relative tm-container px-7 py-14 sm:px-12 md:px-16 md:py-20 lg:py-24">
+      <div className="relative tm-container px-7 py-16 sm:px-12 md:px-16 md:py-24 lg:py-28">
         <Reveal>
           <Link
             href={`/articles/${article.slug}`}
@@ -41,19 +52,25 @@ export function EditorsPickBanner({ article }: { article: ArticleMeta | null }) 
             >
               {article.title}
             </h2>
-            <p className="mt-5 max-w-xl leading-relaxed text-text-secondary">
+            <p className="mt-5 max-w-xl leading-relaxed text-text-secondary md:text-lg">
               {article.description}
             </p>
-            <p className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-text-tertiary">
-              <span>{article.author.name}</span>
+
+            <div className="mt-8 flex items-center gap-3">
+              <AuthorAvatar name={article.author.name} size="sm" />
+              <div className="text-sm">
+                <span className="font-medium text-text">{article.author.name}</span>
+                <span className="text-text-tertiary"> · {article.author.role}</span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-text-tertiary">
+              <time dateTime={article.date}>{formatDate(article.date)}</time>
               <span aria-hidden="true">·</span>
-              <time dateTime={article.date}>
-                {new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(article.date))}
-              </time>
-              <span aria-hidden="true">·</span>
-              <span>{article.readingMinutes} min read</span>
-            </p>
-            <span className="btn btn-light btn-lg pointer-events-none mt-9 group-hover:shadow-glow-md inline-flex items-center gap-2">
+              <span>{formatReadingMinutes(article.readingMinutes)}</span>
+            </div>
+
+            <span className="btn btn-primary btn-lg pointer-events-none mt-9 group-hover:shadow-glow-md inline-flex items-center gap-2">
               Read Full Story
               <Icon
                 name="arrow-right"

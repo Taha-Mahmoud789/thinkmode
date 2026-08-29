@@ -1,12 +1,9 @@
 import { EditorialLead } from "@/components/sections/editorial-lead";
 import { LatestStories } from "@/components/sections/latest-stories";
+import { TrendingRail } from "@/components/sections/trending-rail";
 import { CategoryIndex } from "@/components/sections/category-index";
 import { EditorsPickBanner } from "@/components/sections/editors-pick";
-import {
-  AboutTeaser,
-  NewsletterSection,
-  PrinciplesSection,
-} from "@/components/sections/editorial-blocks";
+import { NewsletterSection, AboutTeaser } from "@/components/sections/editorial-blocks";
 import { AdInArticle } from "@/components/ads/ad-slot";
 import {
   getCategoriesWithCounts,
@@ -55,14 +52,14 @@ export default function HomePage() {
     <>
       <EditorialLead
         lead={featured[0] ?? null}
-        briefs={[featured[1], featured[2]].filter(
+        briefs={[featured[1], featured[2], featured[3]].filter(
           (article): article is NonNullable<typeof article> => Boolean(article),
         )}
       />
-      <LatestStories articles={latest.slice(0, 8)} trending={trending} />
+      <LatestStories articles={latest.slice(0, 7)} />
+      <TrendingRail articles={trending} />
       <CategoryIndex categories={categories} />
       <EditorsPickBanner article={editorsPick} />
-      <PrinciplesSection />
       <NewsletterSection />
       <AboutTeaser />
       <AdInArticle slotId="home-footer-banner" label="Advertisement" className="mb-10" />
