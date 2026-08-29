@@ -3,39 +3,29 @@ import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
 import { NewsletterForm } from "@/components/blocks/newsletter-form";
 
-/** Clean newsletter section with subtle gradient background. */
+/** Editorial newsletter — clean, minimal, magazine-style subscription prompt. */
 export function NewsletterSection() {
   return (
-    <section className="tm-section relative overflow-hidden" aria-labelledby="newsletter-heading">
+    <section className="tm-section" aria-labelledby="newsletter-heading">
       <div className="tm-container">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-surface via-surface to-surface-2 p-8 md:p-14">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0"
-            >
-              <div className="absolute -right-24 -top-24 h-[320px] w-[320px] rounded-full bg-primary/15 blur-[90px]" />
-              <div className="absolute -bottom-32 left-1/4 h-[280px] w-[280px] rounded-full bg-cyan/10 blur-[90px]" />
-            </div>
-
-            <div className="relative mx-auto max-w-2xl text-center">
-              <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl border border-primary/30 bg-primary/12 text-primary-light">
-                <Icon name="mail" size={22} />
-              </span>
+          <div className="border-y border-border py-12 md:py-16">
+            <div className="mx-auto max-w-xl text-center">
+              <p className="kicker justify-center">
+                <Icon name="mail" size={14} className="text-primary" />
+                Newsletter
+              </p>
               <h2
                 id="newsletter-heading"
-                className="mt-6 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+                className="mt-4 font-display text-2xl font-bold tracking-tight text-text md:text-3xl"
               >
-                Stay Ahead in Tech
+                Get the latest stories in your inbox
               </h2>
-              <p className="mx-auto mt-4 max-w-xl leading-relaxed text-text-secondary">
-                Join developers and technology enthusiasts getting the latest
-                insights, tutorials, and tools directly in their inbox.
+              <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-text-secondary">
+                A weekly roundup of the best articles, tutorials, and tools
+                — no spam, unsubscribe anytime.
               </p>
-              <NewsletterForm source="homepage" compact className="mx-auto mt-8 max-w-md" />
-              <p className="mt-5 text-xs text-text-tertiary">
-                No spam, ever. Unsubscribe anytime.
-              </p>
+              <NewsletterForm source="homepage" compact className="mx-auto mt-6 max-w-sm" />
             </div>
           </div>
         </Reveal>
@@ -44,30 +34,50 @@ export function NewsletterSection() {
   );
 }
 
-/** Minimal about teaser — short description + CTA. */
+/** Editorial about — magazine masthead style with key facts. */
 export function AboutTeaser() {
   return (
     <section className="tm-section" aria-labelledby="about-teaser-heading">
       <div className="tm-container">
         <Reveal>
-          <div className="rounded-3xl border border-border bg-surface/50 p-8 md:p-12">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="kicker justify-center">About ThinkMode</p>
+          <div className="grid gap-10 md:grid-cols-[1fr_auto] md:items-center md:gap-16">
+            <div>
+              <p className="kicker">
+                <Icon name="book-open" size={14} className="text-primary" />
+                About
+              </p>
               <h2
                 id="about-teaser-heading"
-                className="mt-4 font-display text-3xl font-bold tracking-tight text-text md:text-4xl"
+                className="mt-4 font-display text-2xl font-bold tracking-tight text-text md:text-3xl"
               >
-                A publication for people who build
+                ThinkMode
               </h2>
-              <p className="mt-5 text-lg leading-relaxed text-text-secondary">
-                ThinkMode is a digital publication for developers, builders,
-                and curious minds exploring technology, artificial
-                intelligence, programming, and the future of software.
+              <p className="mt-4 max-w-lg text-base leading-relaxed text-text-secondary">
+                A digital publication for developers, builders, and curious minds
+                exploring technology, artificial intelligence, programming, and the
+                future of software.
               </p>
-              <Link href="/about" className="btn btn-secondary mt-8">
-                Read our story
+              <Link href="/about" className="btn btn-secondary mt-6">
+                Our story
                 <Icon name="arrow-right" size={15} />
               </Link>
+            </div>
+
+            <div className="flex flex-col gap-4 text-center sm:flex-row sm:gap-8 md:flex-col md:gap-4">
+              {[
+                { label: "Articles", value: "190+" },
+                { label: "Topics", value: "19" },
+                { label: "Readers", value: "10K+" },
+              ].map((stat) => (
+                <div key={stat.label} className="min-w-[100px]">
+                  <p className="font-display text-2xl font-bold tabular-nums text-primary-light">
+                    {stat.value}
+                  </p>
+                  <p className="mt-0.5 text-xs uppercase tracking-[0.14em] text-text-tertiary">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </Reveal>
