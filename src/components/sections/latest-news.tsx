@@ -26,7 +26,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
   return (
     <section className="tm-section" aria-labelledby="latest-heading">
       <div className="tm-container">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <p className="kicker">
               <Icon name="zap" size={14} className="text-primary" />
@@ -48,27 +48,27 @@ export function LatestNews({ articles }: LatestNewsProps) {
           </Link>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-5">
+        <div className="grid gap-5 lg:grid-cols-5">
           {/* Large card — left */}
           <Reveal className="lg:col-span-3">
             <Link
               href={`/articles/${hero.slug}`}
               className="group block overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
             >
-              <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
+              <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
                 <img
                   src={hero.cover}
                   alt=""
                   loading="eager"
                   decoding="async"
                   width={1200}
-                  height={750}
+                  height={675}
                   className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-5">
                   <span
-                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider backdrop-blur"
+                    className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
                     style={{
                       backgroundColor: "var(--chip-bg)",
                       color: hero.category.accent,
@@ -77,18 +77,16 @@ export function LatestNews({ articles }: LatestNewsProps) {
                   >
                     {hero.category.shortName}
                   </span>
-                  <h3 className="mt-3 max-w-2xl font-display text-2xl font-bold leading-tight tracking-tight text-text">
+                  <h3 className="mt-2 max-w-xl font-display text-xl font-bold leading-tight tracking-tight text-text md:text-2xl">
                     {hero.title}
                   </h3>
-                  <div className="mt-3 flex items-center gap-3">
+                  <div className="mt-2 flex items-center gap-2">
                     <AuthorAvatar name={hero.author.name} size="sm" />
-                    <div className="text-xs">
-                      <span className="font-medium text-text">{hero.author.name}</span>
-                      <span className="text-text-tertiary"> · {formatDate(hero.date)}</span>
-                    </div>
-                    <span className="text-xs text-text-tertiary">
-                      {formatReadingMinutes(hero.readingMinutes)}
-                    </span>
+                    <span className="text-xs font-medium text-text">{hero.author.name}</span>
+                    <span className="text-xs text-text-tertiary">·</span>
+                    <span className="text-xs text-text-tertiary">{formatDate(hero.date)}</span>
+                    <span className="text-xs text-text-tertiary">·</span>
+                    <span className="text-xs text-text-tertiary">{formatReadingMinutes(hero.readingMinutes)}</span>
                   </div>
                 </div>
               </div>
@@ -96,14 +94,14 @@ export function LatestNews({ articles }: LatestNewsProps) {
           </Reveal>
 
           {/* Small cards — right */}
-          <div className="flex flex-col gap-6 lg:col-span-2">
+          <div className="flex flex-col gap-5 lg:col-span-2">
             {sideCards.map((article, i) => (
               <Reveal key={article.slug} delay={(i + 1) * 100}>
                 <Link
                   href={`/articles/${article.slug}`}
                   className="group flex overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
                 >
-                  <div className="relative w-2/5 shrink-0 overflow-hidden bg-surface-2">
+                  <div className="relative w-[45%] shrink-0 overflow-hidden bg-surface-2">
                     <img
                       src={article.cover}
                       alt=""
@@ -114,8 +112,8 @@ export function LatestNews({ articles }: LatestNewsProps) {
                       className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col justify-center gap-2 p-4">
-                    <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                  <div className="flex flex-1 flex-col justify-center gap-1.5 p-4">
+                    <div className="flex items-center gap-1.5 text-[10px] text-text-tertiary">
                       <span
                         className="font-semibold uppercase tracking-wider"
                         style={{ color: article.category.accent }}
@@ -128,7 +126,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
                     <h3 className="line-clamp-2 font-display text-sm font-semibold leading-snug tracking-tight text-text transition-colors group-hover:text-primary-light">
                       {article.title}
                     </h3>
-                    <div className="flex items-center justify-end">
+                    <div className="mt-auto flex items-center justify-end pt-1">
                       <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border bg-surface transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-text-inverse">
                         <Icon name="arrow-right" size={12} />
                       </span>
