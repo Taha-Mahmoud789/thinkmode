@@ -15,7 +15,8 @@ interface LatestNewsProps {
 }
 
 /**
- * Latest News — Asymmetric layout matching MAGZIN editorial design
+ * Latest News — MAGZIN-style asymmetric layout
+ * Large card left, two compact horizontal cards right, equal visual weight
  */
 export function LatestNews({ articles }: LatestNewsProps) {
   if (articles.length < 3) return null;
@@ -26,6 +27,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
   return (
     <section className="tm-section" aria-labelledby="latest-heading">
       <div className="tm-container">
+        {/* Section header */}
         <div className="mb-6 flex items-center justify-between">
           <div>
             <p className="kicker">
@@ -48,24 +50,27 @@ export function LatestNews({ articles }: LatestNewsProps) {
           </Link>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-5 lg:items-start">
-          {/* Large card — left */}
+        {/* Content grid */}
+        <div className="grid gap-5 lg:grid-cols-5">
+          {/* Large card — left side */}
           <Reveal className="lg:col-span-3">
             <Link
               href={`/articles/${hero.slug}`}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
+              className="group block overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
             >
-              <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
+              <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
                 <img
                   src={hero.cover}
                   alt=""
                   loading="eager"
                   decoding="async"
                   width={1200}
-                  height={675}
+                  height={750}
                   className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                {/* Content overlay at bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-5">
                   <span
                     className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
@@ -93,7 +98,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
             </Link>
           </Reveal>
 
-          {/* Small cards — right */}
+          {/* Small cards — right side */}
           <div className="flex flex-col gap-5 lg:col-span-2">
             {sideCards.map((article, i) => (
               <Reveal key={article.slug} delay={(i + 1) * 100}>
@@ -101,7 +106,8 @@ export function LatestNews({ articles }: LatestNewsProps) {
                   href={`/articles/${article.slug}`}
                   className="group flex overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
                 >
-                  <div className="relative w-[45%] shrink-0 overflow-hidden bg-surface-2">
+                  {/* Image */}
+                  <div className="relative w-[40%] shrink-0 overflow-hidden bg-surface-2">
                     <img
                       src={article.cover}
                       alt=""
@@ -112,6 +118,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
                       className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                     />
                   </div>
+                  {/* Text */}
                   <div className="flex flex-1 flex-col justify-center gap-1.5 p-4">
                     <div className="flex items-center gap-1.5 text-[10px] text-text-tertiary">
                       <span
