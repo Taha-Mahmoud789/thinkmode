@@ -17,7 +17,6 @@ export const siteConfig = {
     { label: "Articles", href: "/articles", matchPrefix: "/articles" },
     { label: "Categories", href: "/categories", matchPrefix: "/categories" },
     { label: "AI Lab", href: "/ai-lab", matchPrefix: "/ai-lab" },
-    { label: "Tutorials", href: "/tutorials", matchPrefix: "/tutorials" },
     { label: "Newsletter", href: "/newsletter", matchPrefix: "/newsletter" },
     { label: "About", href: "/about", matchPrefix: "/about" },
   ] as NavigationItem[],
@@ -27,12 +26,10 @@ export const siteConfig = {
       { label: "Home", href: "/" },
       { label: "Articles", href: "/articles" },
       { label: "Categories", href: "/categories" },
-      { label: "Tutorials", href: "/tutorials" },
       { label: "AI Lab", href: "/ai-lab" },
       { label: "About", href: "/about" },
     ] as NavigationItem[],
     resources: [
-      { label: "Guides", href: "/tutorials" },
       { label: "Tools", href: "/categories/tools-resources" },
       { label: "Newsletter", href: "/newsletter" },
       { label: "RSS", href: "/rss.xml" },
@@ -61,7 +58,6 @@ export const siteConfig = {
     "Automation",
     "DevOps & Cloud",
     "Cybersecurity",
-    "Tutorials",
   ],
 } as const;
 
