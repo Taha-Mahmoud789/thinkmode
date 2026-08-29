@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Icon } from "@/components/ui/icon";
+import { siteConfig } from "@/config/site";
 
 interface ShareButtonsProps {
   title: string;
@@ -36,7 +37,7 @@ export function ShareButtons({ title, slug }: ShareButtonsProps) {
   }
 
   const encodedUrl = encodeURIComponent(
-    `https://thinkmode.dev/articles/${slug}`,
+    `${siteConfig.url}/articles/${slug}`,
   );
   const encodedTitle = encodeURIComponent(title);
 
