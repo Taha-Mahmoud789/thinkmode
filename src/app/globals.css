@@ -2,13 +2,46 @@
 
 /* ---------------------------------------------------------------------------
    ThinkMode design system
-   Dark-first tokens, mapped into Tailwind v4 via @theme inline.
+   Light-first tokens (MAGZIN-inspired), mapped into Tailwind v4 via @theme inline.
    Never hard-code colors in components — consume tokens/utilities instead.
 --------------------------------------------------------------------------- */
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --background: #f7f7fa;
+  --surface: #ffffff;
+  --surface-2: #f4f4f7;
+  --surface-3: #eaeaef;
+
+  --primary: #6d28d9;
+  --primary-light: #7c3cff;
+  --cyan: #0e7490;
+  --blue: #2563eb;
+
+  --success: #059669;
+  --warning: #b45309;
+  --danger: #e11d48;
+
+  --text: #131316;
+  --text-secondary: #52525e;
+  --text-tertiary: #6d6d78;
+  --text-inverse: #ffffff;
+
+  --border: rgba(15, 15, 30, 0.08);
+  --border-strong: rgba(15, 15, 30, 0.15);
+
+  --ring: rgba(109, 40, 217, 0.45);
+  --shadow-color: 220deg 20% 55%;
+
+  --chip-bg: rgba(255, 255, 255, 0.9);
+  --overlay: rgba(0, 0, 0, 0.35);
+  --scrim: rgba(0, 0, 0, 0.25);
+}
+
 [data-theme="dark"] {
   color-scheme: dark;
 
@@ -41,39 +74,6 @@
   --chip-bg: rgba(5, 5, 8, 0.55);
   --overlay: rgba(0, 0, 0, 0.6);
   --scrim: rgba(0, 0, 0, 0.4);
-}
-
-[data-theme="light"] {
-  color-scheme: light;
-
-  --background: #f7f7fa;
-  --surface: #ffffff;
-  --surface-2: #f0f0f5;
-  --surface-3: #e8e8f0;
-
-  --primary: #6d28d9;
-  --primary-light: #7c3cff;
-  --cyan: #0e7490;
-  --blue: #2563eb;
-
-  --success: #059669;
-  --warning: #b45309;
-  --danger: #e11d48;
-
-  --text: #131316;
-  --text-secondary: #52525e;
-  --text-tertiary: #6d6d78;
-  --text-inverse: #ffffff;
-
-  --border: rgba(15, 15, 30, 0.1);
-  --border-strong: rgba(15, 15, 30, 0.2);
-
-  --ring: rgba(109, 40, 217, 0.45);
-  --shadow-color: 220deg 20% 55%;
-
-  --chip-bg: rgba(255, 255, 255, 0.85);
-  --overlay: rgba(0, 0, 0, 0.35);
-  --scrim: rgba(0, 0, 0, 0.25);
 }
 
 @theme inline {

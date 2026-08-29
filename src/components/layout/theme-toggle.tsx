@@ -61,4 +61,4 @@ export function ThemeToggle() {
 }
 
 /** Runs before paint to restore the persisted theme (prevents FOUC). */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem("thinkmode-theme")||"dark";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
+export const themeInitScript = `(function(){try{var t=localStorage.getItem("thinkmode-theme")||"light";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;

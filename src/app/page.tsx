@@ -1,16 +1,13 @@
-import { EditorialLead } from "@/components/sections/editorial-lead";
-import { LatestStories } from "@/components/sections/latest-stories";
-import { TrendingRail } from "@/components/sections/trending-rail";
-import { CategoryIndex } from "@/components/sections/category-index";
-import { EditorsPickBanner } from "@/components/sections/editors-pick";
-import { NewsletterSection, AboutTeaser } from "@/components/sections/editorial-blocks";
-import { AdInArticle } from "@/components/ads/ad-slot";
+import { HeroBanner } from "@/components/sections/hero-banner";
+import { FeaturedCards } from "@/components/sections/featured-cards";
+import { CategoryPills } from "@/components/sections/category-pills";
+import { LatestNews } from "@/components/sections/latest-news";
+import { ArticleGrid } from "@/components/sections/article-grid";
+import { NewsletterSection } from "@/components/sections/editorial-blocks";
 import {
   getCategoriesWithCounts,
   getAllArticleMetas,
-  getEditorsPick,
   getFeaturedArticles,
-  getTrendingArticles,
 } from "@/lib/articles";
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
@@ -43,59 +40,32 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const featured = getFeaturedArticles(3);
-  const trending = getTrendingArticles(5);
   const allArticles = getAllArticleMetas();
   const categories = getCategoriesWithCounts();
-  const editorsPick = getEditorsPick();
 
   // Latest = articles that are NOT featured (avoid duplicates)
   const featuredSlugs = new Set(featured.map((a) => a.slug));
-  const trendingSlugs = new Set(trending.map((a) => a.slug));
-  const latest = allArticles.filter(
-    (a) => !featuredSlugs.has(a.slug) && !trendingSlugs.has(a.slug) && a.slug !== editorsPick?.slug,
-  );
-
-  const leadCover = featured[0]?.cover;
-  const latestLcp = latest[0]?.cover;
+  const latest = allArticles.filter((a) => !featuredSlugs.has(a.slug));
 
   return (
     <>
-      {/* Preload editorial lead cover */}
-      {leadCover && (
-        <link rel="preload" href={leadCover} as="image" />
-      )}
-      {/* Preload LCP image (latest-stories hero — first large visible image on mobile) */}
-      {latestLcp && latestLcp !== leadCover && (
-        <link rel="preload" href={latestLcp} as="image" fetchPriority="high" />
-      )}
+      {/* 1. Hero Banner — centered headline */}
+      <HeroBanner />
 
-      {/* 1. Hero — lead story + 2 briefs */}
-      <EditorialLead
-        lead={featured[0] ?? null}
-        briefs={[featured[1], featured[2]].filter(
-          (article): article is NonNullable<typeof article> => Boolean(article),
-        )}
-      />
+      {/* 2. Featured Cards — 3 large cards with floating category chips */}
+      <FeaturedCards articles={featured} />
 
-      {/* 2. Latest Stories — grid with sticky sidebar (no overlap with featured/trending) */}
-      <LatestStories articles={latest.slice(0, 9)} trending={trending} />
+      {/* 3. Category Pills — horizontal scrollable filter */}
+      <CategoryPills categories={categories} />
 
-      {/* 3. Trending Rail — horizontal scroll */}
-      <TrendingRail articles={trending} />
+      {/* 4. Latest News — asymmetric layout (large left, 2 small right) */}
+      <LatestNews articles={latest.slice(0, 3)} />
 
-      {/* 4. Categories */}
-      <CategoryIndex categories={categories} />
-
-      {/* 5. Editor's Pick */}
-      <EditorsPickBanner article={editorsPick} />
+      {/* 5. Article Grid — 2-column article cards */}
+      <ArticleGrid articles={latest.slice(3, 7)} />
 
       {/* 6. Newsletter */}
       <NewsletterSection />
-
-      {/* 7. About */}
-      <AboutTeaser />
-
-      <AdInArticle slotId="home-footer-banner" label="Advertisement" className="mb-10" />
     </>
   );
 }
