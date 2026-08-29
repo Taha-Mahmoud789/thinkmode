@@ -205,11 +205,11 @@ export function LatestStories({ articles, trending = [] }: LatestStoriesProps) {
           )}
         </div>
 
-        {/* ── Bottom row — compact cards ──────────────────────────── */}
+        {/* ── Bottom row — 2x3 compact cards ───────────────────────── */}
         {rest.length > 2 && (
           <div className="mt-8 border-t border-border pt-8">
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {rest.slice(2, 6).map((article, i) => (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {rest.slice(2, 8).map((article, i) => (
                 <Reveal key={article.slug} delay={i * 60}>
                   <Link
                     href={`/articles/${article.slug}`}
