@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { PresenceHeartbeat } from "@/components/layout/presence-heartbeat";
 import { Analytics } from "@/components/analytics/analytics";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { fontVariables } from "@/config/fonts";
@@ -79,6 +80,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <ScrollProgress />
+        <PresenceHeartbeat />
         <Analytics />
         <AuthProvider>
           <SiteHeader />

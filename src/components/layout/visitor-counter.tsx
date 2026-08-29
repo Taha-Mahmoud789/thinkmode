@@ -8,6 +8,10 @@ interface VisitStats {
   today: number;
 }
 
+interface PresenceStats {
+  online: number;
+}
+
 function Stat({ label, value }: { label: string; value?: number }) {
   return (
     <div className="flex items-baseline gap-2">
@@ -22,23 +26,22 @@ function Stat({ label, value }: { label: string; value?: number }) {
 }
 
 /**
- * Footer traffic ribbon (GoatCounter-backed).
+ * Footer traffic ribbon (GoatCounter-backed) + live presence count.
  *
  * Total + Today are fetched from the server-side GoatCounter proxy
- * (/api/visits) so the API bearer token never reaches the browser. The
- * count.js embed (see Analytics) feeds pageviews to GoatCounter, whose own
- * dashboard shows live "reading now" — the footer intentionally keeps the two
- * reliable daily numbers and stays out of live-session polling to avoid a
- * fragile live endpoint.
+ * (/api/visits). Online Now is fetched from /api/presence which tracks
+ * heartbeats from active browser tabs.
  *
  * Collapses to nothing until GoatCounter is configured.
  */
 export function VisitorCounter() {
   const [stats, setStats] = useState<VisitStats | null>(null);
+  const [online, setOnline] = useState<number | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    const load = async () => {
+
+    const loadVisits = async () => {
       try {
         const res = await fetch("/api/visits", { cache: "no-store" });
         if (!res.ok) return;
@@ -48,8 +51,26 @@ export function VisitorCounter() {
         // Proxy unreachable — keep last values.
       }
     };
-    void load();
-    const interval = window.setInterval(load, 60_000);
+
+    const loadPresence = async () => {
+      try {
+        const res = await fetch("/api/presence", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as PresenceStats;
+        if (!cancelled) setOnline(data.online);
+      } catch {
+        // Ignore — next interval will retry.
+      }
+    };
+
+    const loadAll = () => {
+      void loadVisits();
+      void loadPresence();
+    };
+
+    loadAll();
+    const interval = window.setInterval(loadAll, 60_000);
+
     return () => {
       cancelled = true;
       window.clearInterval(interval);
@@ -65,6 +86,9 @@ export function VisitorCounter() {
     >
       <Stat label="Total visits" value={stats?.total} />
       <Stat label="Today" value={stats?.today} />
+      {online !== null && online > 0 && (
+        <Stat label="Online now" value={online} />
+      )}
     </dl>
   );
 }
