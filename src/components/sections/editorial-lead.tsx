@@ -86,7 +86,7 @@ export function EditorialLead({ lead, briefs }: EditorialLeadProps) {
 
             {/* Cover — right */}
             <div className="lg:col-span-7">
-              <Link href={`/articles/${lead.slug}`} className="group block">
+              <Link href={`/articles/${lead.slug}`} className="group block" aria-label={`Read: ${lead.title}`}>
                 <div className="overflow-hidden rounded-2xl border border-border">
                   <img
                     src={lead.cover}

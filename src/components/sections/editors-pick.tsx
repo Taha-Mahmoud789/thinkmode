@@ -70,6 +70,7 @@ export function EditorsPickBanner({ article }: { article: ArticleMeta | null }) 
             <Link
               href={`/articles/${article.slug}`}
               className="group block"
+              aria-label={`Read: ${article.title}`}
             >
               <div className="overflow-hidden rounded-2xl border border-border">
                 <img
