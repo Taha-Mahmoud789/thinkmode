@@ -48,7 +48,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
           </Link>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-5 lg:items-stretch">
+        <div className="grid gap-5 lg:grid-cols-5 lg:items-start">
           {/* Large card — left */}
           <Reveal className="lg:col-span-3">
             <Link
@@ -99,7 +99,7 @@ export function LatestNews({ articles }: LatestNewsProps) {
               <Reveal key={article.slug} delay={(i + 1) * 100}>
                 <Link
                   href={`/articles/${article.slug}`}
-                  className="group flex h-full flex-1 overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
+                  className="group flex overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
                 >
                   <div className="relative w-[45%] shrink-0 overflow-hidden bg-surface-2">
                     <img

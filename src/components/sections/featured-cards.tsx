@@ -22,12 +22,12 @@ export function FeaturedCards({ articles }: FeaturedCardsProps) {
   return (
     <section className="tm-section" aria-labelledby="featured-heading">
       <div className="tm-container">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:items-stretch">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:items-start">
           {articles.map((article, i) => (
             <Reveal key={article.slug} delay={i * 100}>
               <Link
                 href={`/articles/${article.slug}`}
-                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
+                className="group block overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
                   <img

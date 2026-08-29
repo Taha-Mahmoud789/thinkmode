@@ -10,9 +10,9 @@ export function NewsletterSection() {
       <div className="tm-container">
         <Reveal>
           <div className="overflow-hidden rounded-2xl border border-border bg-surface">
-            <div className="grid gap-8 md:grid-cols-2 md:items-stretch">
+            <div className="grid gap-8 md:grid-cols-2 md:items-start">
               {/* Left — form */}
-              <div className="flex flex-col justify-center p-8 md:p-10">
+              <div className="p-8 md:p-10">
                 <p className="kicker">
                   <Icon name="mail" size={14} className="text-primary" />
                   Newsletter
