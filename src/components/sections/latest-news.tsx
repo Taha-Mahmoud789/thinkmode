@@ -15,8 +15,7 @@ interface LatestNewsProps {
 }
 
 /**
- * Latest News — Asymmetric layout with large card left, two small cards right
- * Inspired by MAGZIN editorial design
+ * Latest News — Asymmetric layout matching MAGZIN editorial design
  */
 export function LatestNews({ articles }: LatestNewsProps) {
   if (articles.length < 3) return null;
@@ -42,10 +41,10 @@ export function LatestNews({ articles }: LatestNewsProps) {
           </div>
           <Link
             href="/articles"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-text-inverse transition duration-200 hover:bg-primary-light"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-text-inverse transition duration-200 hover:bg-primary-light"
+            aria-label="View more articles"
           >
-            View More
-            <Icon name="arrow-right" size={14} />
+            <Icon name="arrow-right" size={18} />
           </Link>
         </div>
 
@@ -116,18 +115,23 @@ export function LatestNews({ articles }: LatestNewsProps) {
                     />
                   </div>
                   <div className="flex flex-1 flex-col justify-center gap-2 p-4">
-                    <span
-                      className="text-[10px] font-semibold uppercase tracking-[0.14em]"
-                      style={{ color: article.category.accent }}
-                    >
-                      {article.category.shortName}
-                    </span>
+                    <div className="flex items-center gap-2 text-xs text-text-tertiary">
+                      <span
+                        className="font-semibold uppercase tracking-wider"
+                        style={{ color: article.category.accent }}
+                      >
+                        {article.category.shortName}
+                      </span>
+                      <span aria-hidden="true">·</span>
+                      <span>{formatReadingMinutes(article.readingMinutes)}</span>
+                    </div>
                     <h3 className="line-clamp-2 font-display text-sm font-semibold leading-snug tracking-tight text-text transition-colors group-hover:text-primary-light">
                       {article.title}
                     </h3>
-                    <div className="flex items-center gap-2 text-xs text-text-tertiary">
-                      <Icon name="clock" size={12} />
-                      <span>{formatReadingMinutes(article.readingMinutes)}</span>
+                    <div className="flex items-center justify-end">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border bg-surface transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-text-inverse">
+                        <Icon name="arrow-right" size={12} />
+                      </span>
                     </div>
                   </div>
                 </Link>

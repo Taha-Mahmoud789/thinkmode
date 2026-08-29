@@ -22,7 +22,6 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile menu is open.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
@@ -30,7 +29,6 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
-  // Escape closes the mobile menu.
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (event: KeyboardEvent) => {
@@ -46,20 +44,36 @@ export function SiteHeader() {
     return pathname === prefix || pathname.startsWith(`${prefix}/`);
   }
 
+  const navItems = [
+    { label: "Home", href: "/" },
+    { label: "Articles", href: "/articles" },
+    { label: "Categories", href: "/categories" },
+    { label: "AI Lab", href: "/ai-lab" },
+    { label: "Newsletter", href: "/newsletter" },
+    { label: "About", href: "/about" },
+  ];
+
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "border-b border-border bg-background/75 backdrop-blur-xl backdrop-saturate-150"
-          : "border-b border-transparent bg-transparent",
+          ? "border-b border-border bg-background/90 backdrop-blur-xl"
+          : "border-b border-transparent bg-background",
       )}
     >
-      <div className="tm-container flex h-[72px] items-center justify-between gap-6">
-        <LogoLink />
+      <div className="tm-container flex h-[60px] items-center justify-between gap-6">
+        {/* Logo + tagline */}
+        <div className="flex items-center gap-3">
+          <LogoLink />
+          <span className="hidden text-xs text-text-tertiary md:inline-block">
+            {siteConfig.tagline}
+          </span>
+        </div>
 
+        {/* Nav */}
         <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
-          {siteConfig.nav.map((item) => {
+          {navItems.map((item) => {
             const active = isActive(item);
             return (
               <Link
@@ -75,7 +89,7 @@ export function SiteHeader() {
                 <span
                   aria-hidden="true"
                   className={cn(
-                    "absolute inset-x-3.5 -bottom-px h-px bg-gradient-to-r from-primary to-cyan transition-opacity",
+                    "absolute inset-x-3.5 -bottom-px h-px bg-primary transition-opacity",
                     active ? "opacity-100" : "opacity-0",
                   )}
                 />
@@ -84,6 +98,7 @@ export function SiteHeader() {
           })}
         </nav>
 
+        {/* Right actions */}
         <div className="flex items-center gap-1.5">
           <Link
             href="/search"
@@ -92,11 +107,7 @@ export function SiteHeader() {
           >
             <Icon name="search" size={17} />
           </Link>
-          <UserMenu />
           <ThemeToggle />
-          <Link href="/newsletter" className="btn btn-primary btn-sm ml-1.5 hidden sm:inline-flex">
-            Subscribe
-          </Link>
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
@@ -107,10 +118,38 @@ export function SiteHeader() {
           >
             <Icon name="menu" size={19} />
           </button>
+          <UserMenu />
         </div>
       </div>
 
-      {/* ------------------------------ mobile nav ------------------------------ */}
+      {/* Breaking news ticker */}
+      <div className="border-t border-border bg-surface-2/50">
+        <div className="tm-container flex h-10 items-center gap-4 overflow-hidden">
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-danger px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-text-inverse">
+            <Icon name="zap" size={10} />
+            Breaking
+          </span>
+          <div className="flex min-w-0 flex-1 items-center gap-4 overflow-hidden">
+            <span className="truncate text-sm text-text-secondary">
+              Sustainable Eating in a Climate-Conscious World
+            </span>
+          </div>
+          <div className="hidden items-center gap-4 md:flex">
+            <Link
+              href="/newsletter"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-text-secondary transition-colors hover:text-text"
+            >
+              <Icon name="mail" size={12} />
+              Subscribe Our Newsletter
+            </Link>
+            <span className="text-xs text-text-tertiary">
+              {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile nav */}
       <div
         id="mobile-nav"
         role="dialog"
@@ -121,7 +160,6 @@ export function SiteHeader() {
           menuOpen ? "pointer-events-auto" : "pointer-events-none",
         )}
       >
-        {/* scrim */}
         <button
           type="button"
           tabIndex={menuOpen ? 0 : -1}
@@ -132,14 +170,13 @@ export function SiteHeader() {
             menuOpen ? "opacity-100" : "opacity-0",
           )}
         />
-        {/* slide-out panel */}
         <div
           className={cn(
             "absolute right-0 top-0 flex h-full w-[86%] max-w-sm flex-col border-l border-border bg-background shadow-2xl transition-transform duration-300 ease-out",
             menuOpen ? "translate-x-0" : "translate-x-full",
           )}
         >
-          <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-border px-5">
+          <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-border px-5">
             <LogoLink />
             <button
               type="button"
@@ -153,7 +190,7 @@ export function SiteHeader() {
 
           <nav aria-label="Mobile" className="flex-1 overflow-y-auto p-4">
             <ul className="space-y-1">
-              {siteConfig.nav.map((item) => {
+              {navItems.map((item) => {
                 const active = isActive(item);
                 return (
                   <li key={item.href}>
@@ -170,7 +207,7 @@ export function SiteHeader() {
                       )}
                     >
                       {item.label}
-                      <Icon name="chevron-right" size={16} className="text-text-tertiary" />
+                      <Icon name="arrow-right" size={16} className="text-text-tertiary" />
                     </Link>
                   </li>
                 );

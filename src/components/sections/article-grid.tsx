@@ -15,8 +15,7 @@ interface ArticleGridProps {
 }
 
 /**
- * Article Grid — Two-column article cards
- * Inspired by MAGZIN editorial design
+ * Article Grid — Two-column cards matching MAGZIN editorial design
  */
 export function ArticleGrid({ articles }: ArticleGridProps) {
   if (articles.length === 0) return null;
@@ -67,10 +66,10 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                     </span>
                   </div>
                   <button
-                    className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm transition-colors hover:bg-surface"
+                    className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/90 backdrop-blur-sm transition-colors hover:bg-white"
                     aria-label={`Bookmark ${article.title}`}
                   >
-                    <Icon name="bookmark" size={14} className="text-text-secondary" />
+                    <Icon name="bookmark" size={14} className="text-text" />
                   </button>
                 </div>
                 <div className="p-5">
@@ -90,7 +89,9 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                       <AuthorAvatar name={article.author.name} size="sm" />
                       <span className="text-xs font-medium text-text">{article.author.name}</span>
                     </div>
-                    <Icon name="arrow-right" size={16} className="text-text-tertiary transition-colors group-hover:text-primary" />
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-text-inverse">
+                      <Icon name="arrow-right" size={14} />
+                    </span>
                   </div>
                 </div>
               </Link>

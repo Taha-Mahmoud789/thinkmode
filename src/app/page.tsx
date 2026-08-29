@@ -3,7 +3,7 @@ import { FeaturedCards } from "@/components/sections/featured-cards";
 import { CategoryPills } from "@/components/sections/category-pills";
 import { LatestNews } from "@/components/sections/latest-news";
 import { ArticleGrid } from "@/components/sections/article-grid";
-import { NewsletterSection } from "@/components/sections/editorial-blocks";
+import { NewsletterSection, AboutTeaser } from "@/components/sections/editorial-blocks";
 import {
   getCategoriesWithCounts,
   getAllArticleMetas,
@@ -66,6 +66,9 @@ export default function HomePage() {
 
       {/* 6. Newsletter */}
       <NewsletterSection />
+
+      {/* 7. About */}
+      <AboutTeaser />
     </>
   );
 }

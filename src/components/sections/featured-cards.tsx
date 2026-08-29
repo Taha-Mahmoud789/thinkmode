@@ -6,7 +6,6 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
-import { AuthorAvatar } from "@/components/ui/author-avatar";
 import type { ArticleMeta } from "@/types";
 import { formatDate, formatReadingMinutes } from "@/lib/utils";
 
@@ -15,8 +14,7 @@ interface FeaturedCardsProps {
 }
 
 /**
- * Featured Cards — Three large cards in a row with floating category chips
- * Inspired by MAGZIN editorial design
+ * Featured Cards — Three large cards matching MAGZIN editorial design
  */
 export function FeaturedCards({ articles }: FeaturedCardsProps) {
   if (articles.length < 3) return null;
@@ -52,10 +50,10 @@ export function FeaturedCards({ articles }: FeaturedCardsProps) {
                     {article.category.shortName}
                   </span>
                   <button
-                    className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background/80 backdrop-blur-sm transition-colors hover:bg-surface"
+                    className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/90 backdrop-blur-sm transition-colors hover:bg-white"
                     aria-label={`Bookmark ${article.title}`}
                   >
-                    <Icon name="bookmark" size={14} className="text-text-secondary" />
+                    <Icon name="bookmark" size={14} className="text-text" />
                   </button>
                 </div>
                 <div className="p-5">
@@ -70,12 +68,10 @@ export function FeaturedCards({ articles }: FeaturedCardsProps) {
                   <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-text-secondary">
                     {article.description}
                   </p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <AuthorAvatar name={article.author.name} size="sm" />
-                      <span className="text-xs font-medium text-text">{article.author.name}</span>
-                    </div>
-                    <Icon name="arrow-right" size={16} className="text-text-tertiary transition-colors group-hover:text-primary" />
+                  <div className="mt-4 flex items-center justify-end">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-text-inverse">
+                      <Icon name="arrow-right" size={14} />
+                    </span>
                   </div>
                 </div>
               </Link>

@@ -3,29 +3,30 @@ import { Reveal } from "@/components/ui/reveal";
 import { Icon } from "@/components/ui/icon";
 import { NewsletterForm } from "@/components/blocks/newsletter-form";
 
-/** Editorial newsletter — clean, minimal, magazine-style subscription prompt. */
+/** Editorial newsletter — MAGZIN-style subscription prompt. */
 export function NewsletterSection() {
   return (
     <section className="tm-section" aria-labelledby="newsletter-heading">
       <div className="tm-container">
         <Reveal>
-          <div className="border-y border-border py-12 md:py-16">
-            <div className="mx-auto max-w-xl text-center">
-              <p className="kicker justify-center">
-                <Icon name="mail" size={14} className="text-primary" />
-                Newsletter
-              </p>
-              <h2
-                id="newsletter-heading"
-                className="mt-4 font-display text-2xl font-bold tracking-tight text-text md:text-3xl"
-              >
-                Get the latest stories in your inbox
-              </h2>
-              <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-text-secondary">
-                A weekly roundup of the best articles, tutorials, and tools
-                — no spam, unsubscribe anytime.
-              </p>
-              <NewsletterForm source="homepage" compact className="mx-auto mt-6 max-w-sm" />
+          <div className="overflow-hidden rounded-2xl border border-border bg-surface">
+            <div className="grid gap-8 md:grid-cols-2">
+              {/* Left — form */}
+              <div className="p-8 md:p-10">
+                <p className="kicker">
+                  <Icon name="mail" size={14} className="text-primary" />
+                  Newsletter
+                </p>
+                <h2
+                  id="newsletter-heading"
+                  className="mt-4 font-display text-2xl font-bold tracking-tight text-text md:text-3xl"
+                >
+                  Subscribe to our newsletter and Stay updated each week
+                </h2>
+                <NewsletterForm source="homepage" compact className="mt-6" />
+              </div>
+              {/* Right — decorative */}
+              <div className="hidden bg-surface-2 md:block" />
             </div>
           </div>
         </Reveal>
