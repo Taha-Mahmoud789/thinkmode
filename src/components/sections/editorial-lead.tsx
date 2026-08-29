@@ -92,7 +92,6 @@ export function EditorialLead({ lead, briefs }: EditorialLeadProps) {
                     src={lead.cover}
                     alt=""
                     loading="eager"
-                    fetchPriority="high"
                     decoding="async"
                     width={1200}
                     height={750}

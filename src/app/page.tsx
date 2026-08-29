@@ -56,12 +56,17 @@ export default function HomePage() {
   );
 
   const leadCover = featured[0]?.cover;
+  const latestLcp = latest[0]?.cover;
 
   return (
     <>
-      {/* Preload lead cover for LCP */}
+      {/* Preload editorial lead cover */}
       {leadCover && (
-        <link rel="preload" href={leadCover} as="image" fetchPriority="high" />
+        <link rel="preload" href={leadCover} as="image" />
+      )}
+      {/* Preload LCP image (latest-stories hero — first large visible image on mobile) */}
+      {latestLcp && latestLcp !== leadCover && (
+        <link rel="preload" href={latestLcp} as="image" fetchPriority="high" />
       )}
 
       {/* 1. Hero — lead story + 2 briefs */}
