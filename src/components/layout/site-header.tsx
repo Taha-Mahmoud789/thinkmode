@@ -140,7 +140,7 @@ export function SiteHeader() {
           )}
         >
           <div className="flex h-[72px] shrink-0 items-center justify-between border-b border-border px-5">
-            <LogoLink size={30} />
+            <LogoLink />
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
