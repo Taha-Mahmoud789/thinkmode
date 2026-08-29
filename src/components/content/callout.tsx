@@ -1,6 +1,8 @@
 interface CalloutProps {
   /** Visual intent of the callout. */
-  variant?: "info" | "warning" | "tip";
+  variant?: "info" | "warning" | "tip" | "success";
+  /** Alias accepted from MDX — maps to variant. */
+  type?: "info" | "warning" | "tip" | "success";
   title?: string;
   children: React.ReactNode;
 }
@@ -23,16 +25,22 @@ const VARIANTS = {
     label: "Tip",
     color: "#34d399",
   },
+  success: {
+    icon: "M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z",
+    label: "Success",
+    color: "#34d399",
+  },
 } as const;
 
-/** Editorial callout: <Callout variant="tip" title="…">…</Callout> */
-export function Callout({ variant = "info", title, children }: CalloutProps) {
-  const config = VARIANTS[variant];
+/** Editorial callout: <Callout variant="tip" title="…">…</Callout> or <Callout type="info">…</Callout> */
+export function Callout({ variant, type, title, children }: CalloutProps) {
+  const intent = variant ?? type ?? "info";
+  const config = VARIANTS[intent];
   return (
     <aside
       className="my-8 flex gap-4 rounded-xl border border-border bg-surface-2/60 p-5"
       style={{ borderLeft: `3px solid ${config.color}` }}
-      role={variant === "warning" ? "alert" : undefined}
+      role={intent === "warning" ? "alert" : undefined}
     >
       <svg
         aria-hidden="true"
