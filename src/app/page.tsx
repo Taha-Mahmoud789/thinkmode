@@ -1,4 +1,5 @@
 import { EditorialLead } from "@/components/sections/editorial-lead";
+import { FeaturedGrid } from "@/components/sections/featured-grid";
 import { LatestStories } from "@/components/sections/latest-stories";
 import { TrendingRail } from "@/components/sections/trending-rail";
 import { CategoryIndex } from "@/components/sections/category-index";
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const featured = getFeaturedArticles(6);
+  const featured = getFeaturedArticles(8);
   const trending = getTrendingArticles(5);
   const latest = getAllArticleMetas();
   const categories = getCategoriesWithCounts();
@@ -56,7 +57,8 @@ export default function HomePage() {
           (article): article is NonNullable<typeof article> => Boolean(article),
         )}
       />
-      <LatestStories articles={latest.slice(0, 7)} />
+      <FeaturedGrid articles={featured.slice(0, 7)} />
+      <LatestStories articles={latest.slice(0, 7)} trending={trending} />
       <TrendingRail articles={trending} />
       <CategoryIndex categories={categories} />
       <EditorsPickBanner article={editorsPick} />

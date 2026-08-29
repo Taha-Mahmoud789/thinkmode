@@ -10,6 +10,8 @@ interface SectionHeaderProps {
   linkHref?: string;
   linkLabel?: string;
   align?: "left" | "center";
+  /** Optional icon displayed inline with the kicker text. */
+  icon?: IconName;
 }
 
 /** Consistent section heading: kicker line + display title + optional link. */
@@ -20,6 +22,7 @@ export function SectionHeader({
   linkHref,
   linkLabel = "View all",
   align = "left",
+  icon,
 }: SectionHeaderProps) {
   const centered = align === "center";
   return (
@@ -31,7 +34,10 @@ export function SectionHeader({
       }
     >
       <div className={centered ? "" : "max-w-2xl"}>
-        <p className={`kicker ${centered ? "justify-center" : ""}`}>{kicker}</p>
+        <p className={`kicker ${centered ? "justify-center" : ""}`}>
+          {icon && <Icon name={icon} size={14} className="text-primary" />}
+          {kicker}
+        </p>
         <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-text md:text-4xl">
           {title}
         </h2>
