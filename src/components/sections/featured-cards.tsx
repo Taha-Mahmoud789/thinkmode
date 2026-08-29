@@ -50,7 +50,7 @@ export function FeaturedCards({ articles }: FeaturedCardsProps) {
                     {article.category.shortName}
                   </span>
                   <button
-                    className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/90 backdrop-blur-sm transition-colors hover:bg-white"
+                    className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-surface/80 backdrop-blur-sm transition-colors hover:bg-surface"
                     aria-label={`Bookmark ${article.title}`}
                   >
                     <Icon name="bookmark" size={14} className="text-text" />
