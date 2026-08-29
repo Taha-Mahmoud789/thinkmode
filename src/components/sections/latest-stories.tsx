@@ -49,22 +49,22 @@ export function LatestStories({ articles }: LatestStoriesProps) {
           </Link>
         </div>
 
-        {/* ── Asymmetric grid ─────────────────────────────────────── */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Hero card — spans 2 cols */}
-          <Reveal className="sm:col-span-2 lg:col-span-2">
+        {/* ── Top row: hero + 2 side cards ───────────────────────── */}
+        <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+          {/* Hero card — large */}
+          <Reveal>
             <Link
               href={`/articles/${hero.slug}`}
               className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
             >
-              <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
+              <div className="relative aspect-[16/10] overflow-hidden bg-surface-2">
                 <img
                   src={hero.cover}
                   alt=""
                   loading="eager"
                   decoding="async"
                   width={1200}
-                  height={675}
+                  height={750}
                   className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                 />
                 <span
@@ -104,55 +104,57 @@ export function LatestStories({ articles }: LatestStoriesProps) {
             </Link>
           </Reveal>
 
-          {/* Side cards */}
-          {rest.slice(0, 2).map((article, i) => (
-            <Reveal key={article.slug} delay={(i + 1) * 80}>
-              <Link
-                href={`/articles/${article.slug}`}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
-              >
-                <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
-                  <img
-                    src={article.cover}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    width={600}
-                    height={338}
-                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                  />
-                  <span
-                    className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
-                    style={{
-                      backgroundColor: "rgba(5,5,8,0.55)",
-                      color: article.category.accent,
-                      border: `1px solid ${article.category.accent}55`,
-                    }}
-                  >
-                    {article.category.shortName}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col gap-2 p-5">
-                  <h3 className="line-clamp-2 font-display text-base font-semibold leading-snug tracking-tight text-text transition-colors group-hover:text-primary-light">
-                    {article.title}
-                  </h3>
-                  <p className="line-clamp-2 text-sm text-text-secondary">
-                    {article.description}
-                  </p>
-                  <div className="mt-auto flex items-center gap-2 pt-2 text-xs text-text-tertiary">
-                    <time dateTime={article.date}>{formatDate(article.date)}</time>
-                    <span aria-hidden="true" className="h-0.5 w-0.5 rounded-full bg-text-tertiary" />
-                    <span>{formatReadingMinutes(article.readingMinutes)}</span>
+          {/* Side cards — stacked */}
+          <div className="flex flex-col gap-6">
+            {rest.slice(0, 2).map((article, i) => (
+              <Reveal key={article.slug} delay={(i + 1) * 80}>
+                <Link
+                  href={`/articles/${article.slug}`}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card"
+                >
+                  <div className="relative aspect-[16/9] overflow-hidden bg-surface-2">
+                    <img
+                      src={article.cover}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      width={600}
+                      height={338}
+                      className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                    />
+                    <span
+                      className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider backdrop-blur"
+                      style={{
+                        backgroundColor: "rgba(5,5,8,0.55)",
+                        color: article.category.accent,
+                        border: `1px solid ${article.category.accent}55`,
+                      }}
+                    >
+                      {article.category.shortName}
+                    </span>
                   </div>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
+                  <div className="flex flex-1 flex-col gap-2 p-5">
+                    <h3 className="line-clamp-2 font-display text-base font-semibold leading-snug tracking-tight text-text transition-colors group-hover:text-primary-light">
+                      {article.title}
+                    </h3>
+                    <p className="line-clamp-2 text-sm text-text-secondary">
+                      {article.description}
+                    </p>
+                    <div className="mt-auto flex items-center gap-2 pt-2 text-xs text-text-tertiary">
+                      <time dateTime={article.date}>{formatDate(article.date)}</time>
+                      <span aria-hidden="true" className="h-0.5 w-0.5 rounded-full bg-text-tertiary" />
+                      <span>{formatReadingMinutes(article.readingMinutes)}</span>
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
         </div>
 
-        {/* ── Bottom row — smaller cards ──────────────────────────── */}
+        {/* ── Bottom row — compact cards ──────────────────────────── */}
         {rest.length > 2 && (
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {rest.slice(2, 6).map((article, i) => (
               <Reveal key={article.slug} delay={i * 60}>
                 <Link
