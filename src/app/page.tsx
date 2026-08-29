@@ -1,5 +1,4 @@
 import { EditorialLead } from "@/components/sections/editorial-lead";
-import { FeaturedGrid } from "@/components/sections/featured-grid";
 import { LatestStories } from "@/components/sections/latest-stories";
 import { TrendingRail } from "@/components/sections/trending-rail";
 import { CategoryIndex } from "@/components/sections/category-index";
@@ -43,27 +42,47 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const featured = getFeaturedArticles(8);
+  const featured = getFeaturedArticles(3);
   const trending = getTrendingArticles(5);
-  const latest = getAllArticleMetas();
+  const allArticles = getAllArticleMetas();
   const categories = getCategoriesWithCounts();
   const editorsPick = getEditorsPick();
 
+  // Latest = articles that are NOT featured (avoid duplicates)
+  const featuredSlugs = new Set(featured.map((a) => a.slug));
+  const trendingSlugs = new Set(trending.map((a) => a.slug));
+  const latest = allArticles.filter(
+    (a) => !featuredSlugs.has(a.slug) && !trendingSlugs.has(a.slug) && a.slug !== editorsPick?.slug,
+  );
+
   return (
     <>
+      {/* 1. Hero — lead story + 2 briefs */}
       <EditorialLead
         lead={featured[0] ?? null}
-        briefs={[featured[1], featured[2], featured[3]].filter(
+        briefs={[featured[1], featured[2]].filter(
           (article): article is NonNullable<typeof article> => Boolean(article),
         )}
       />
-      <FeaturedGrid articles={featured.slice(0, 7)} />
-      <LatestStories articles={latest.slice(0, 7)} trending={trending} />
+
+      {/* 2. Latest Stories — grid with sticky sidebar (no overlap with featured/trending) */}
+      <LatestStories articles={latest.slice(0, 9)} trending={trending} />
+
+      {/* 3. Trending Rail — horizontal scroll */}
       <TrendingRail articles={trending} />
+
+      {/* 4. Categories */}
       <CategoryIndex categories={categories} />
+
+      {/* 5. Editor's Pick */}
       <EditorsPickBanner article={editorsPick} />
+
+      {/* 6. Newsletter */}
       <NewsletterSection />
+
+      {/* 7. About */}
       <AboutTeaser />
+
       <AdInArticle slotId="home-footer-banner" label="Advertisement" className="mb-10" />
     </>
   );
